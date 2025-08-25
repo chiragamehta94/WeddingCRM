@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeddingCraft CRM - Wedding Decoration Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Navigation -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <h1 class="logo">WeddingCraft CRM</h1>
+                    <nav class="nav">
+                        <button class="nav-btn active" data-section="dashboard">
+                            <span>📊</span>Dashboard
+                        </button>
+                        <button class="nav-btn" data-section="clients">
+                            <span>👥</span>Clients
+                        </button>
+                        <button class="nav-btn" data-section="projects">
+                            <span>📋</span>Projects
+                        </button>
+                        <button class="nav-btn" data-section="designs">
+                            <span>🎨</span>Designs
+                        </button>
+                        <button class="nav-btn" data-section="calendar">
+                            <span>📅</span>Calendar
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="section active">
+                    <div class="section-header">
+                        <h2>Dashboard</h2>
+                        <p class="section-subtitle">Overview of your wedding decoration business</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card clickable-widget" data-navigate="clients">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <h3 id="total-clients">0</h3>
+                                <p>Total Clients</p>
+                            </div>
+                        </div>
+                        <div class="stat-card clickable-widget" data-navigate="projects">
+                            <div class="stat-icon">📋</div>
+                            <div class="stat-content">
+                                <h3 id="active-projects">0</h3>
+                                <p>Active Projects</p>
+                            </div>
+                        </div>
+                        <div class="stat-card clickable-widget" data-navigate="pending-payments">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-content">
+                                <h3 id="pending-amount">₹0</h3>
+                                <p>Pending Payments</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-content">
+                                <h3 id="meeting-reminders">0</h3>
+                                <p>Meeting Reminders</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-sections">
+                        <div class="dashboard-card">
+                            <h3>Upcoming Events</h3>
+                            <div id="upcoming-events-list" class="recent-list">
+                                <!-- Only confirmed weddings -->
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <h3>Meeting Reminders</h3>
+                            <div id="meeting-reminders-list" class="recent-list">
+                                <!-- Meeting reminders -->
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <h3>Calendar Preview</h3>
+                            <div id="dashboard-calendar" class="dashboard-calendar clickable-widget" data-navigate="calendar">
+                                <!-- Mini calendar -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Clients Section -->
+                <section id="clients" class="section">
+                    <div class="section-header">
+                        <h2>Clients Management</h2>
+                        <div class="section-actions">
+                            <div class="search-box">
+                                <input type="text" id="client-search" placeholder="Search clients..." class="form-control">
+                            </div>
+                            <button class="btn btn--primary" id="add-client-btn">
+                                <span>+</span>Add Client
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="inquiry">Inquiry</button>
+                        <button class="filter-tab" data-filter="partial">Partial</button>
+                        <button class="filter-tab" data-filter="confirmed">Confirmed</button>
+                    </div>
+
+                    <div id="clients-list" class="clients-grid">
+                        <!-- Dynamic content -->
+                    </div>
+                </section>
+
+                <!-- Projects Section -->
+                <section id="projects" class="section">
+                    <div class="section-header">
+                        <h2>Projects Management</h2>
+                        <div class="section-actions">
+                            <div class="search-box">
+                                <input type="text" id="project-search" placeholder="Search projects..." class="form-control">
+                            </div>
+                            <button class="btn btn--primary" id="add-project-btn">
+                                <span>+</span>Add Project
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="projects-list" class="projects-grid">
+                        <!-- Dynamic content -->
+                    </div>
+                </section>
+
+                <!-- Designs Section -->
+                <section id="designs" class="section">
+                    <div class="section-header">
+                        <h2>Design Portfolio</h2>
+                        <div class="section-actions">
+                            <button class="btn btn--primary" id="add-design-btn">
+                                <span>+</span>Upload Design
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="Traditional">Traditional</button>
+                        <button class="filter-tab" data-filter="Modern">Modern</button>
+                        <button class="filter-tab" data-filter="Royal">Royal</button>
+                        <button class="filter-tab" data-filter="Beach">Beach</button>
+                    </div>
+
+                    <div id="designs-grid" class="designs-grid">
+                        <!-- Dynamic content -->
+                    </div>
+                </section>
+
+                <!-- Calendar Section -->
+                <section id="calendar" class="section">
+                    <div class="section-header">
+                        <h2>Calendar</h2>
+                        <div class="section-actions">
+                            <button class="btn btn--outline" id="calendar-prev">‹ Previous</button>
+                            <button class="btn btn--primary" id="add-event-btn">
+                                <span>+</span>Add Event
+                            </button>
+                            <button class="btn btn--outline" id="calendar-next">Next ›</button>
+                        </div>
+                    </div>
+
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <h3 id="calendar-month-year"></h3>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid">
+                            <!-- Dynamic calendar grid -->
+                        </div>
+                    </div>
+
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <span class="legend-color wedding"></span>
+                            <span>Wedding (Confirmed Only)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color meeting"></span>
+                            <span>Meeting</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color followup"></span>
+                            <span>Follow-up</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pending Payments Section -->
+                <section id="pending-payments" class="section">
+                    <div class="section-header">
+                        <h2>Pending Payments</h2>
+                        <p class="section-subtitle">Manage outstanding payments</p>
+                    </div>
+
+                    <div id="pending-payments-list" class="clients-grid">
+                        <!-- Dynamic content -->
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Modal for Add/Edit Client -->
+        <div id="client-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="client-modal-title">Add New Client</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <form id="client-form" class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Client Name *</label>
+                        <input type="text" id="client-name" class="form-control" required>
+                        <div class="form-error" id="client-name-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number *</label>
+                        <input type="tel" id="client-phone" class="form-control" required>
+                        <div class="form-error" id="client-phone-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Wedding Date</label>
+                        <input type="date" id="client-wedding-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Venue</label>
+                        <input type="text" id="client-venue" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Budget (₹)</label>
+                        <input type="number" id="client-budget" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Follow-up Date</label>
+                        <input type="date" id="client-followup-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Meeting Date</label>
+                        <input type="date" id="client-meeting-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <textarea id="client-notes" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--outline" id="cancel-client">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Save Client</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal for Client Details -->
+        <div id="client-details-modal" class="modal hidden">
+            <div class="modal-content modal-content--large">
+                <div class="modal-header">
+                    <h3 id="client-details-title">Client Details</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="client-details-tabs">
+                        <button class="tab-btn active" data-tab="info">Info</button>
+                        <button class="tab-btn" data-tab="elements">Element Sheet</button>
+                        <button class="tab-btn" data-tab="cost">Cost Sheet</button>
+                    </div>
+                    
+                    <div id="client-info-tab" class="tab-content active">
+                        <div id="client-details-content"></div>
+                    </div>
+                    
+                    <div id="client-elements-tab" class="tab-content">
+                        <div class="form-group">
+                            <label class="form-label">Element Sheet Content</label>
+                            <textarea id="element-sheet-content" class="form-control" rows="10" placeholder="Type element sheet details here..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Upload Element Sheet (Excel/Word)</label>
+                            <input type="file" id="element-sheet-upload" class="form-control" accept=".pdf,.doc,.docx,.xls,.xlsx">
+                        </div>
+                        <div class="uploaded-files" id="uploaded-files"></div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn--primary" id="save-element-sheet">Save Element Sheet</button>
+                            <button type="button" class="btn btn--outline" id="download-element-sheet">Download as Word</button>
+                        </div>
+                    </div>
+                    
+                    <div id="client-cost-tab" class="tab-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Royalty (₹)</label>
+                                <input type="number" id="cost-royalty" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Labour (₹)</label>
+                                <input type="number" id="cost-labour" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Transport (₹)</label>
+                                <input type="number" id="cost-transport" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Purchase (₹)</label>
+                                <input type="number" id="cost-new-purchase" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Lights (₹)</label>
+                                <input type="number" id="cost-lights" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Floral (₹)</label>
+                                <input type="number" id="cost-floral" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Generators (₹)</label>
+                                <input type="number" id="cost-generators" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Linens (₹)</label>
+                                <input type="number" id="cost-linens" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Misc (₹)</label>
+                                <input type="number" id="cost-misc" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Other Expenses (₹)</label>
+                                <input type="number" id="cost-other-expenses" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Total Cost: <strong id="total-cost">₹0</strong></label>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn--primary" id="save-cost-sheet">Save Cost Sheet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Add/Edit Design -->
+        <div id="design-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="design-modal-title">Upload New Design</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <form id="design-form" class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Design Name *</label>
+                        <input type="text" id="design-name" class="form-control" required>
+                        <div class="form-error" id="design-name-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category *</label>
+                        <select id="design-category" class="form-control" required>
+                            <option value="">Select Category</option>
+                            <option value="Traditional">Traditional</option>
+                            <option value="Modern">Modern</option>
+                            <option value="Royal">Royal</option>
+                            <option value="Beach">Beach</option>
+                            <option value="Garden">Garden</option>
+                        </select>
+                        <div class="form-error" id="design-category-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Design Images *</label>
+                        <input type="file" id="design-images" class="form-control" accept="image/*" multiple required>
+                        <div class="image-preview" id="design-image-preview"></div>
+                        <div class="form-error" id="design-images-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="design-description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Customization Notes</label>
+                        <textarea id="design-customization" class="form-control" rows="3" placeholder="Notes about customization options..."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--outline" id="cancel-design">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Save Design</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal for Add/Edit Project -->
+        <div id="project-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="project-modal-title">Add New Project</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <form id="project-form" class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Select Client *</label>
+                        <select id="project-client" class="form-control" required>
+                            <option value="">Select a client</option>
+                        </select>
+                        <div class="form-error" id="project-client-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Finalized Amount (₹) *</label>
+                        <input type="number" id="project-amount" class="form-control" required>
+                        <div class="form-error" id="project-amount-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Advance Paid (₹)</label>
+                        <input type="number" id="project-advance" class="form-control" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Payment Status</label>
+                        <select id="project-payment-status" class="form-control" readonly>
+                            <option value="pending">Pending</option>
+                            <option value="partial">Partial</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Project Images</label>
+                        <input type="file" id="project-images" class="form-control" accept="image/*" multiple>
+                        <div class="image-preview" id="project-image-preview"></div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--outline" id="cancel-project">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Save Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal for Add Calendar Event -->
+        <div id="event-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="event-modal-title">Add New Event</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <form id="event-form" class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Event Title *</label>
+                        <input type="text" id="event-title" class="form-control" required>
+                        <div class="form-error" id="event-title-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Event Type</label>
+                        <select id="event-type" class="form-control" required>
+                            <option value="wedding">Wedding</option>
+                            <option value="meeting">Meeting</option>
+                            <option value="followup">Follow-up</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date *</label>
+                        <input type="date" id="event-date" class="form-control" required>
+                        <div class="form-error" id="event-date-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select Client (Optional)</label>
+                        <select id="event-client" class="form-control">
+                            <option value="">Select a client</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Venue (Optional)</label>
+                        <input type="text" id="event-venue" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <textarea id="event-notes" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--outline" id="cancel-event">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Save Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Success Message -->
+        <div id="success-message" class="success-toast hidden">
+            <div class="success-content">
+                <span class="success-icon">✅</span>
+                <span id="success-text">Operation completed successfully!</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
