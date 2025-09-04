@@ -3,518 +3,2511 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeddingCraft CRM - Wedding Decoration Management</title>
-    <link rel="stylesheet" href="style.css">
+    <title>WeddingCraft CRM - Enhanced Version</title>
+    <style>
+        /* Base Styles */
+        :root{--bg:#f5f7fa;--panel:#ffffff;--muted:#6b7280;--text:#0f172a;--primary:#2563eb;--good:#16a34a;--warn:#f59e0b;--bad:#ef4444;}
+        *{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text);}
+        .topbar{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,#fff,#fbfdff);border-bottom:1px solid #e6eef9;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .brand-and-search{display:flex;gap:12px;align-items:center}h1{font-size:18px;margin:0}h1 a{text-decoration:none;color:var(--text)}
+        .search input{padding:8px 10px;border-radius:8px;border:1px solid #e6eef9;background:#fff;width:280px}
+        .tabs{display:flex;gap:8px;flex-wrap:wrap}.tab-btn{padding:8px 12px;border-radius:999px;text-decoration:none;color:var(--text);background:transparent;border:1px solid transparent;cursor:pointer}
+        .tab-btn.active{background:var(--primary);color:#fff;font-weight:600}
+        .header-actions{display:flex;gap:8px;align-items:center}.ghost{background:transparent;border:1px solid #e6eef9;padding:8px 10px;border-radius:8px;cursor:pointer}.primary{background:var(--primary);color:#fff;border-radius:8px;padding:8px 10px;cursor:pointer}.warn{color:var(--bad);border-color:rgba(239,68,68,.12)}
+        main{padding:20px;max-width:1200px;margin:0 auto}.tab{display:none}.tab.active{display:block}
+        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 24px}.card{background:var(--panel);border:1px solid #eef6ff;border-radius:12px;padding:12px;box-shadow:0 2px 6px rgba(16,24,40,0.04)}.stat{font-size:28px;font-weight:800}.label{opacity:.8;margin-top:6px;font-size:12px;letter-spacing:.4px}
+        .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:24px}.panel{background:var(--panel);border:1px solid #eef6ff;border-radius:12px;padding:12px;margin:12px 0}.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}.list li{padding:10px 12px;background:#fbfdff;border:1px solid #eef6ff;border-radius:10px}
+        .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid #eef6ff;border-radius:12px;overflow:hidden}.table th,.table td{padding:10px 12px;border-bottom:1px solid #f1f6fb;text-align:left;font-size:14px}.design-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.design-card{background:#fff;border:1px solid #eef6ff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}.design-card img{width:100%;display:block;height:160px;object-fit:cover;background:#fff}.design-card .meta{padding:10px 12px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+        .actions{display:flex;gap:8px}.action{background:transparent;border:1px solid #eef6ff;color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px}.legend{display:flex;gap:14px;align-items:center;margin-bottom:12px;opacity:.9}.legend-item{display:flex;gap:6px;align-items:center}.dot{width:10px;height:10px;border-radius:999px;display:inline-block}.dot.wedding{background:var(--good)}.dot.meeting{background:var(--primary)}.dot.follow{background:var(--warn)}.calendar-full{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:var(--panel);border:1px solid #eef6ff;border-radius:12px;padding:10px}.day{min-height:100px;background:#fff;border:1px solid #f1f6fb;border-radius:8px;padding:8px;font-size:13px;position:relative;display:flex;flex-direction:column}.day .date{opacity:.9;font-weight:700}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;margin-top:8px;cursor:pointer}.badge.wedding{background:rgba(16,185,129,0.12)}.badge.meeting{background:rgba(37,99,235,0.08)}.badge.follow{background:rgba(245,158,11,0.08)}.modal{width:min(880px,96vw);border:none;border-radius:12px;padding:0;background:var(--panel);color:var(--text)}.modal form{padding:12px;display:grid;gap:10px}label{display:grid;gap:6px;font-size:14px}input,select,textarea{background:#fff;border:1px solid #eef6ff;color:var(--text);padding:10px 12px;border-radius:8px;font-size:14px}menu{display:flex;justify-content:flex-end;gap:8px;margin:8px 0 0;padding:0}.toast{position:fixed;bottom:18px;right:18px;background:#fff;border:1px solid #eef6ff;padding:10px 12px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}.file-label input{display:none}
+
+        /* Status Badge Colors */
+        .badge.good{background:rgba(34,197,94,0.12)!important;border:1px solid rgba(34,197,94,0.3)!important;color:#15803d!important;font-weight:600}
+        .badge.primary{background:rgba(196,181,253,0.15)!important;border:1px solid rgba(196,181,253,0.4)!important;color:#7c3aed!important;font-weight:600}
+        .badge.muted{background:rgba(254,240,138,0.15)!important;border:1px solid rgba(254,240,138,0.4)!important;color:#a16207!important;font-weight:600}
+
+        /* Clickable Dashboard Widgets */
+        .clickable-stat{cursor:pointer!important;transition:all 0.3s ease;position:relative;overflow:hidden}
+        .clickable-stat *{cursor:pointer!important}
+        .clickable-stat::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(37,99,235,0.1),transparent);transition:left 0.5s}
+        .clickable-stat:hover::before{left:100%}
+        .clickable-stat:hover{cursor:pointer!important;transform:translateY(-4px);box-shadow:0 8px 25px rgba(16,24,40,0.15);border-color:var(--primary)}
+        .clickable-stat:hover .stat{color:var(--primary);transform:scale(1.05);cursor:pointer!important}
+        .clickable-stat:hover .label{color:var(--primary);font-weight:600;cursor:pointer!important}
+        .clickable-stat:active{transform:translateY(-2px);box-shadow:0 4px 12px rgba(16,24,40,0.12)}
+
+        /* Calendar Enhancements */
+        #calendar-month-display{background:linear-gradient(135deg,var(--primary),#3b82f6,#6366f1);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:'Inter',system-ui,Arial,sans-serif;letter-spacing:-0.5px;position:relative}
+        #calendar-month-display::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:60px;height:3px;background:linear-gradient(90deg,var(--primary),#3b82f6);border-radius:2px;opacity:0.6}
+        .badge.clickable-event{cursor:pointer;transition:all 0.2s ease;position:relative;border:1px solid transparent}
+        .badge.clickable-event:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,0.15);z-index:10}
+        .badge.clickable-event:active{transform:scale(0.98)}
+        .badge.wedding.clickable-event{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:#047857;font-weight:600}
+        .badge.wedding.clickable-event:hover{background:rgba(16,185,129,0.25);border-color:rgba(16,185,129,0.5)}
+        .badge.meeting.clickable-event{background:rgba(37,99,235,0.12);border-color:rgba(37,99,235,0.25);color:#1d4ed8;font-weight:600}
+        .badge.meeting.clickable-event:hover{background:rgba(37,99,235,0.2);border-color:rgba(37,99,235,0.4)}
+        .badge.follow.clickable-event{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.25);color:#b45309;font-weight:600}
+        .badge.follow.clickable-event:hover{background:rgba(245,158,11,0.2);border-color:rgba(245,158,11,0.4)}
+
+        /* Project Detail Modal Enhancements */
+        #project-detail-modal{max-width:1000px}
+        #project-detail-modal .tab-btn{padding:8px 16px;border:1px solid #e5e7eb;background:white;color:#374151;border-radius:20px;cursor:pointer;transition:all 0.2s ease;font-size:14px;font-weight:500}
+        #project-detail-modal .tab-btn.active{background:#2563eb;color:white;border-color:#2563eb}
+        #project-detail-modal .tab-btn:hover:not(.active){background:#f3f4f6;border-color:#d1d5db}
+        .tab-content{display:none!important}
+        .tab-content.active{display:block!important}
+        .project-design-item{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;background:white;margin-bottom:16px;transition:all 0.2s ease}
+        .project-design-item:hover{box-shadow:0 2px 8px rgba(0,0,0,0.08);transform:translateY(-1px)}
+        .project-design-item img,.project-design-item video{width:100%;max-height:200px;object-fit:cover;display:block;background:#f9fafb}
+        .project-design-item video{background:#000}
+
+        /* Today's To-do List Styling */
+        .todo-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fbfdff;border:1px solid #eef6ff;border-radius:10px;margin-bottom:8px}
+        .todo-item .type-badge{padding:4px 8px;border-radius:999px;font-size:11px;font-weight:600}
+        .todo-item .type-badge.meeting{background:rgba(37,99,235,0.12);color:#1d4ed8;border:1px solid rgba(37,99,235,0.25)}
+        .todo-item .type-badge.follow{background:rgba(245,158,11,0.12);color:#b45309;border:1px solid rgba(245,158,11,0.25)}
+        .todo-item .client-name{font-weight:600;color:var(--text)}
+        .todo-item .time-info{font-size:12px;color:var(--muted)}
+
+        /* Notes column styling */
+        .notes-cell{max-width:200px;word-wrap:break-word;font-size:13px;color:#6b7280;line-height:1.4}
+
+        /* Overview Media Upload Section */
+        .overview-upload-section{background:rgba(37,99,235,0.02);padding:16px;border-radius:8px;border:1px solid rgba(37,99,235,0.1);margin:20px 0}
+        .overview-media-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+
+        /* UPDATED Element Sheet - Compact with File Upload */
+        .element-sheet-container{
+            background:rgba(37,99,235,0.02)!important;
+            padding:20px!important;
+            border-radius:12px!important;
+            border:2px solid rgba(37,99,235,0.2)!important;
+            margin:20px 0!important;
+            display:block!important;
+            visibility:visible!important;
+        }
+        .element-sheet-textarea{
+            width:100%!important;
+            min-height:120px!important;
+            padding:15px!important;
+            border:2px solid #d1d5db!important;
+            border-radius:8px!important;
+            font-family:inherit!important;
+            font-size:14px!important;
+            line-height:1.6!important;
+            resize:vertical!important;
+            background:#fff!important;
+            color:var(--text)!important;
+            display:block!important;
+            visibility:visible!important;
+            transition:border-color 0.2s ease;
+        }
+        .element-sheet-textarea:focus{
+            border-color:var(--primary)!important;
+            outline:none!important;
+            box-shadow:0 0 0 3px rgba(37,99,235,0.1)!important;
+        }
+        .element-sheet-actions{
+            display:flex!important;
+            gap:12px!important;
+            margin-top:16px!important;
+            flex-wrap:wrap!important;
+            align-items:center!important;
+        }
+        
+        /* File Upload Section for Element Sheet */
+        .element-file-upload{
+            background:rgba(16,185,129,0.05);
+            padding:16px;
+            border-radius:8px;
+            border:2px dashed rgba(16,185,129,0.3);
+            margin-top:16px;
+            text-align:center;
+        }
+        .element-file-input{
+            margin:8px 0;
+            padding:8px;
+            border:1px solid #d1d5db;
+            border-radius:6px;
+            background:white;
+            width:100%;
+            max-width:400px;
+        }
+        .element-uploaded-files{
+            margin-top:16px;
+            display:grid;
+            gap:8px;
+        }
+        .uploaded-file-item{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:12px 16px;
+            background:white;
+            border:1px solid #e5e7eb;
+            border-radius:8px;
+            font-size:13px;
+            box-shadow:0 1px 3px rgba(0,0,0,0.05);
+        }
+        .file-info{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            flex:1;
+        }
+        .file-icon{
+            width:20px;
+            height:20px;
+            display:inline-block;
+            font-size:16px;
+        }
+        .file-details{
+            display:flex;
+            flex-direction:column;
+            gap:2px;
+        }
+        .file-name{
+            font-weight:600;
+            color:#374151;
+        }
+        .file-size{
+            color:#6b7280;
+            font-size:11px;
+        }
+        .file-actions{
+            display:flex;
+            gap:8px;
+            align-items:center;
+        }
+        .auto-save-indicator{
+            font-size:12px;
+            color:var(--good);
+            opacity:0;
+            transition:opacity 0.3s ease;
+            font-weight:500;
+        }
+        .auto-save-indicator.visible{
+            opacity:1;
+        }
+
+        /* MAXIMIZED DOCUMENT HEIGHT: Full Screen Preview Modal with Optimized Document Display */
+        .preview-modal{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100vw;
+            height:100vh;
+            max-width:none;
+            max-height:none;
+            border:none;
+            border-radius:0;
+            padding:0;
+            background:var(--panel);
+            z-index:9999;
+        }
+        .preview-modal-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:8px 16px;
+            border-bottom:1px solid #e5e7eb;
+            background:#f8fafc;
+            font-size:16px;
+            font-weight:600;
+            height:50px;
+            flex-shrink:0;
+        }
+        .preview-modal-content{
+            padding:0;
+            height:calc(100vh - 50px);
+            overflow:hidden;
+            background:#ffffff;
+        }
+        .preview-iframe{
+            width:100%;
+            height:100%;
+            border:none;
+            border-radius:0;
+            display:block;
+        }
+        .preview-unavailable{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            height:100%;
+            color:#6b7280;
+            text-align:center;
+            padding:40px;
+        }
+        .preview-unavailable .icon{
+            font-size:72px;
+            margin-bottom:24px;
+        }
+        .preview-unavailable h3{
+            font-size:24px;
+            margin:16px 0;
+            color:#374151;
+        }
+        .preview-unavailable p{
+            font-size:16px;
+            margin:8px 0;
+            line-height:1.5;
+        }
+
+        /* Validation Error Styles */
+        .validation-error{
+            color:var(--bad)!important;
+            font-size:12px!important;
+            margin-top:4px!important;
+            font-weight:500;
+        }
+        .field-error{
+            border-color:var(--bad)!important;
+            background:rgba(239,68,68,0.05)!important;
+        }
+
+        /* Payment Status Preview */
+        .payment-status-preview{
+            background:rgba(37,99,235,0.08);
+            border:1px solid rgba(37,99,235,0.2);
+            padding:8px 12px;
+            border-radius:6px;
+            margin-top:8px;
+            font-size:12px;
+            font-weight:600;
+            color:#1d4ed8;
+        }
+
+        /* Responsive Design */
+        @media (max-width:1200px){.three-col{grid-template-columns:1fr 1fr}.three-col .panel:nth-child(3){grid-column:1/-1}}
+        @media (max-width:960px){.stats{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.design-grid{grid-template-columns:repeat(2,1fr)}}
+        @media (max-width:768px){.three-col{grid-template-columns:1fr;gap:16px}#calendar-month-display{font-size:24px!important}.badge.clickable-event:hover{transform:none}.badge.clickable-event:active{transform:scale(0.95)}.clickable-stat:hover{transform:translateY(-2px)}}
+        @media (max-width:480px){.stats{grid-template-columns:1fr}#calendar-month-display{font-size:20px!important}}
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header Navigation -->
-        <header class="header">
-            <div class="container">
-                <div class="header-content">
-                    <h1 class="logo">WeddingCraft CRM</h1>
-                    <nav class="nav">
-                        <button class="nav-btn active" data-section="dashboard">
-                            <span>📊</span>Dashboard
-                        </button>
-                        <button class="nav-btn" data-section="clients">
-                            <span>👥</span>Clients
-                        </button>
-                        <button class="nav-btn" data-section="projects">
-                            <span>📋</span>Projects
-                        </button>
-                        <button class="nav-btn" data-section="designs">
-                            <span>🎨</span>Designs
-                        </button>
-                        <button class="nav-btn" data-section="calendar">
-                            <span>📅</span>Calendar
-                        </button>
-                    </nav>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="container">
-                <!-- Dashboard Section -->
-                <section id="dashboard" class="section active">
-                    <div class="section-header">
-                        <h2>Dashboard</h2>
-                        <p class="section-subtitle">Overview of your wedding decoration business</p>
-                    </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card clickable-widget" data-navigate="clients">
-                            <div class="stat-icon">👥</div>
-                            <div class="stat-content">
-                                <h3 id="total-clients">0</h3>
-                                <p>Total Clients</p>
-                            </div>
-                        </div>
-                        <div class="stat-card clickable-widget" data-navigate="projects">
-                            <div class="stat-icon">📋</div>
-                            <div class="stat-content">
-                                <h3 id="active-projects">0</h3>
-                                <p>Active Projects</p>
-                            </div>
-                        </div>
-                        <div class="stat-card clickable-widget" data-navigate="pending-payments">
-                            <div class="stat-icon">💰</div>
-                            <div class="stat-content">
-                                <h3 id="pending-amount">₹0</h3>
-                                <p>Pending Payments</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">📅</div>
-                            <div class="stat-content">
-                                <h3 id="meeting-reminders">0</h3>
-                                <p>Meeting Reminders</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-sections">
-                        <div class="dashboard-card">
-                            <h3>Upcoming Events</h3>
-                            <div id="upcoming-events-list" class="recent-list">
-                                <!-- Only confirmed weddings -->
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card">
-                            <h3>Meeting Reminders</h3>
-                            <div id="meeting-reminders-list" class="recent-list">
-                                <!-- Meeting reminders -->
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card">
-                            <h3>Calendar Preview</h3>
-                            <div id="dashboard-calendar" class="dashboard-calendar clickable-widget" data-navigate="calendar">
-                                <!-- Mini calendar -->
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Clients Section -->
-                <section id="clients" class="section">
-                    <div class="section-header">
-                        <h2>Clients Management</h2>
-                        <div class="section-actions">
-                            <div class="search-box">
-                                <input type="text" id="client-search" placeholder="Search clients..." class="form-control">
-                            </div>
-                            <button class="btn btn--primary" id="add-client-btn">
-                                <span>+</span>Add Client
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="filter-tabs">
-                        <button class="filter-tab active" data-filter="all">All</button>
-                        <button class="filter-tab" data-filter="inquiry">Inquiry</button>
-                        <button class="filter-tab" data-filter="partial">Partial</button>
-                        <button class="filter-tab" data-filter="confirmed">Confirmed</button>
-                    </div>
-
-                    <div id="clients-list" class="clients-grid">
-                        <!-- Dynamic content -->
-                    </div>
-                </section>
-
-                <!-- Projects Section -->
-                <section id="projects" class="section">
-                    <div class="section-header">
-                        <h2>Projects Management</h2>
-                        <div class="section-actions">
-                            <div class="search-box">
-                                <input type="text" id="project-search" placeholder="Search projects..." class="form-control">
-                            </div>
-                            <button class="btn btn--primary" id="add-project-btn">
-                                <span>+</span>Add Project
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="projects-list" class="projects-grid">
-                        <!-- Dynamic content -->
-                    </div>
-                </section>
-
-                <!-- Designs Section -->
-                <section id="designs" class="section">
-                    <div class="section-header">
-                        <h2>Design Portfolio</h2>
-                        <div class="section-actions">
-                            <button class="btn btn--primary" id="add-design-btn">
-                                <span>+</span>Upload Design
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="filter-tabs">
-                        <button class="filter-tab active" data-filter="all">All</button>
-                        <button class="filter-tab" data-filter="Traditional">Traditional</button>
-                        <button class="filter-tab" data-filter="Modern">Modern</button>
-                        <button class="filter-tab" data-filter="Royal">Royal</button>
-                        <button class="filter-tab" data-filter="Beach">Beach</button>
-                    </div>
-
-                    <div id="designs-grid" class="designs-grid">
-                        <!-- Dynamic content -->
-                    </div>
-                </section>
-
-                <!-- Calendar Section -->
-                <section id="calendar" class="section">
-                    <div class="section-header">
-                        <h2>Calendar</h2>
-                        <div class="section-actions">
-                            <button class="btn btn--outline" id="calendar-prev">‹ Previous</button>
-                            <button class="btn btn--primary" id="add-event-btn">
-                                <span>+</span>Add Event
-                            </button>
-                            <button class="btn btn--outline" id="calendar-next">Next ›</button>
-                        </div>
-                    </div>
-
-                    <div class="calendar-container">
-                        <div class="calendar-header">
-                            <h3 id="calendar-month-year"></h3>
-                        </div>
-                        <div class="calendar-grid" id="calendar-grid">
-                            <!-- Dynamic calendar grid -->
-                        </div>
-                    </div>
-
-                    <div class="calendar-legend">
-                        <div class="legend-item">
-                            <span class="legend-color wedding"></span>
-                            <span>Wedding (Confirmed Only)</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color meeting"></span>
-                            <span>Meeting</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color followup"></span>
-                            <span>Follow-up</span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Pending Payments Section -->
-                <section id="pending-payments" class="section">
-                    <div class="section-header">
-                        <h2>Pending Payments</h2>
-                        <p class="section-subtitle">Manage outstanding payments</p>
-                    </div>
-
-                    <div id="pending-payments-list" class="clients-grid">
-                        <!-- Dynamic content -->
-                    </div>
-                </section>
-            </div>
-        </main>
-
-        <!-- Modal for Add/Edit Client -->
-        <div id="client-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="client-modal-title">Add New Client</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <form id="client-form" class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label">Client Name *</label>
-                        <input type="text" id="client-name" class="form-control" required>
-                        <div class="form-error" id="client-name-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Phone Number *</label>
-                        <input type="tel" id="client-phone" class="form-control" required>
-                        <div class="form-error" id="client-phone-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Wedding Date</label>
-                        <input type="date" id="client-wedding-date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Venue</label>
-                        <input type="text" id="client-venue" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Budget (₹)</label>
-                        <input type="number" id="client-budget" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Follow-up Date</label>
-                        <input type="date" id="client-followup-date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Meeting Date</label>
-                        <input type="date" id="client-meeting-date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Notes</label>
-                        <textarea id="client-notes" class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn--outline" id="cancel-client">Cancel</button>
-                        <button type="submit" class="btn btn--primary">Save Client</button>
-                    </div>
-                </form>
+    <div class="topbar">
+        <div class="brand-and-search">
+            <h1><a href="#dashboard">WeddingCraft CRM</a></h1>
+            <div class="search">
+                <input type="text" id="global-search" placeholder="Search clients, projects, designs...">
             </div>
         </div>
-
-        <!-- Modal for Client Details -->
-        <div id="client-details-modal" class="modal hidden">
-            <div class="modal-content modal-content--large">
-                <div class="modal-header">
-                    <h3 id="client-details-title">Client Details</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="client-details-tabs">
-                        <button class="tab-btn active" data-tab="info">Info</button>
-                        <button class="tab-btn" data-tab="elements">Element Sheet</button>
-                        <button class="tab-btn" data-tab="cost">Cost Sheet</button>
-                    </div>
-                    
-                    <div id="client-info-tab" class="tab-content active">
-                        <div id="client-details-content"></div>
-                    </div>
-                    
-                    <div id="client-elements-tab" class="tab-content">
-                        <div class="form-group">
-                            <label class="form-label">Element Sheet Content</label>
-                            <textarea id="element-sheet-content" class="form-control" rows="10" placeholder="Type element sheet details here..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Upload Element Sheet (Excel/Word)</label>
-                            <input type="file" id="element-sheet-upload" class="form-control" accept=".pdf,.doc,.docx,.xls,.xlsx">
-                        </div>
-                        <div class="uploaded-files" id="uploaded-files"></div>
-                        <div class="modal-actions">
-                            <button type="button" class="btn btn--primary" id="save-element-sheet">Save Element Sheet</button>
-                            <button type="button" class="btn btn--outline" id="download-element-sheet">Download as Word</button>
-                        </div>
-                    </div>
-                    
-                    <div id="client-cost-tab" class="tab-content">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Royalty (₹)</label>
-                                <input type="number" id="cost-royalty" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Labour (₹)</label>
-                                <input type="number" id="cost-labour" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Transport (₹)</label>
-                                <input type="number" id="cost-transport" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">New Purchase (₹)</label>
-                                <input type="number" id="cost-new-purchase" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Lights (₹)</label>
-                                <input type="number" id="cost-lights" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Floral (₹)</label>
-                                <input type="number" id="cost-floral" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Generators (₹)</label>
-                                <input type="number" id="cost-generators" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Linens (₹)</label>
-                                <input type="number" id="cost-linens" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Misc (₹)</label>
-                                <input type="number" id="cost-misc" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Other Expenses (₹)</label>
-                                <input type="number" id="cost-other-expenses" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Total Cost: <strong id="total-cost">₹0</strong></label>
-                        </div>
-                        <div class="modal-actions">
-                            <button type="button" class="btn btn--primary" id="save-cost-sheet">Save Cost Sheet</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal for Add/Edit Design -->
-        <div id="design-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="design-modal-title">Upload New Design</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <form id="design-form" class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label">Design Name *</label>
-                        <input type="text" id="design-name" class="form-control" required>
-                        <div class="form-error" id="design-name-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Category *</label>
-                        <select id="design-category" class="form-control" required>
-                            <option value="">Select Category</option>
-                            <option value="Traditional">Traditional</option>
-                            <option value="Modern">Modern</option>
-                            <option value="Royal">Royal</option>
-                            <option value="Beach">Beach</option>
-                            <option value="Garden">Garden</option>
-                        </select>
-                        <div class="form-error" id="design-category-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Upload Design Images *</label>
-                        <input type="file" id="design-images" class="form-control" accept="image/*" multiple required>
-                        <div class="image-preview" id="design-image-preview"></div>
-                        <div class="form-error" id="design-images-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea id="design-description" class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Customization Notes</label>
-                        <textarea id="design-customization" class="form-control" rows="3" placeholder="Notes about customization options..."></textarea>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn--outline" id="cancel-design">Cancel</button>
-                        <button type="submit" class="btn btn--primary">Save Design</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal for Add/Edit Project -->
-        <div id="project-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="project-modal-title">Add New Project</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <form id="project-form" class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label">Select Client *</label>
-                        <select id="project-client" class="form-control" required>
-                            <option value="">Select a client</option>
-                        </select>
-                        <div class="form-error" id="project-client-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Finalized Amount (₹) *</label>
-                        <input type="number" id="project-amount" class="form-control" required>
-                        <div class="form-error" id="project-amount-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Advance Paid (₹)</label>
-                        <input type="number" id="project-advance" class="form-control" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Payment Status</label>
-                        <select id="project-payment-status" class="form-control" readonly>
-                            <option value="pending">Pending</option>
-                            <option value="partial">Partial</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Upload Project Images</label>
-                        <input type="file" id="project-images" class="form-control" accept="image/*" multiple>
-                        <div class="image-preview" id="project-image-preview"></div>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn--outline" id="cancel-project">Cancel</button>
-                        <button type="submit" class="btn btn--primary">Save Project</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal for Add Calendar Event -->
-        <div id="event-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="event-modal-title">Add New Event</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <form id="event-form" class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label">Event Title *</label>
-                        <input type="text" id="event-title" class="form-control" required>
-                        <div class="form-error" id="event-title-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Event Type</label>
-                        <select id="event-type" class="form-control" required>
-                            <option value="wedding">Wedding</option>
-                            <option value="meeting">Meeting</option>
-                            <option value="followup">Follow-up</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Date *</label>
-                        <input type="date" id="event-date" class="form-control" required>
-                        <div class="form-error" id="event-date-error"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Select Client (Optional)</label>
-                        <select id="event-client" class="form-control">
-                            <option value="">Select a client</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Venue (Optional)</label>
-                        <input type="text" id="event-venue" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Notes</label>
-                        <textarea id="event-notes" class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn--outline" id="cancel-event">Cancel</button>
-                        <button type="submit" class="btn btn--primary">Save Event</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        
-        <!-- Success Message -->
-        <div id="success-message" class="success-toast hidden">
-            <div class="success-content">
-                <span class="success-icon">✅</span>
-                <span id="success-text">Operation completed successfully!</span>
-            </div>
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="clients">Clients</button>
+            <button class="tab-btn" data-tab="projects">Projects</button>
+            <button class="tab-btn" data-tab="designs">Designs</button>
+            <button class="tab-btn" data-tab="calendar">Calendar</button>
+        </nav>
+        <div class="header-actions">
+            <button class="ghost" id="export-receivables">Export Receivables</button>
+            <button class="ghost" id="export-client-data">Export Client Data</button>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <main>
+        <!-- Dashboard -->
+        <section id="dashboard" class="tab active">
+            <h2>Dashboard</h2>
+            <div class="stats">
+                <div id="total-clients" class="card clickable-stat" data-navigate="clients">
+                    <div class="stat">0</div>
+                    <div class="label">Total Clients</div>
+                </div>
+                <div id="active-projects" class="card clickable-stat" data-navigate="projects">
+                    <div class="stat">0</div>
+                    <div class="label">Active Projects</div>
+                </div>
+                <div id="pending-payments" class="card clickable-stat" data-navigate="pending-payments">
+                    <div class="stat">₹0</div>
+                    <div class="label">Pending Payments</div>
+                </div>
+            </div>
+
+            <div class="three-col">
+                <div class="panel">
+                    <h3>Today's To-do List</h3>
+                    <div id="todays-todo" class="list"></div>
+                </div>
+                <div class="panel">
+                    <h3>Meeting Reminders</h3>
+                    <ul id="meeting-reminders" class="list"></ul>
+                </div>
+                <div class="panel">
+                    <h3>Follow-up Reminders</h3>
+                    <ul id="followup-reminders" class="list"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clients -->
+        <section id="clients" class="tab">
+            <div class="section-head">
+                <h2>Clients</h2>
+                <button class="primary" id="add-client">Add Client</button>
+            </div>
+
+            <!-- Client Filters -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; padding: 16px; background: rgba(37,99,235,0.02); border-radius: 8px; border: 1px solid rgba(37,99,235,0.1);">
+                <select id="clients-status-filter">
+                    <option value="all">All Statuses</option>
+                    <option value="Enquiry">Enquiry</option>
+                    <option value="Follow Up Period">Follow Up Period</option>
+                    <option value="Confirmed">Confirmed</option>
+                </select>
+                <select id="clients-wedding-date-filter">
+                    <option value="all">All Wedding Dates</option>
+                </select>
+                <select id="clients-venue-filter">
+                    <option value="all">All Venues</option>
+                </select>
+                <select id="clients-followup-date-filter">
+                    <option value="all">All Follow-up Dates</option>
+                </select>
+                <select id="clients-meeting-date-filter">
+                    <option value="all">All Meeting Dates</option>
+                </select>
+                <button class="ghost" id="clear-all-filters">Clear All Filters</button>
+            </div>
+
+            <table class="table" id="clients-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Wedding Date</th>
+                        <th>Venue</th>
+                        <th>Status</th>
+                        <th>Follow-up</th>
+                        <th>Meeting</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="tab">
+            <div class="section-head">
+                <h2>Projects</h2>
+                <button class="primary" id="add-project">Add Project</button>
+            </div>
+            <table class="table" id="projects-table">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Finalized Amount (₹)</th>
+                        <th>Advance Paid (₹)</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Pending Payments -->
+        <section id="pending-payments" class="tab">
+            <div class="section-head">
+                <h2>Pending Payments</h2>
+            </div>
+            <table class="table" id="pending-payments-table">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Project Amount (₹)</th>
+                        <th>Advance Paid (₹)</th>
+                        <th>Balance Due (₹)</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Designs -->
+        <section id="designs" class="tab">
+            <div class="section-head">
+                <h2>Designs</h2>
+                <button class="primary" id="add-design">Add Design</button>
+            </div>
+            <div class="design-grid" id="designs-grid"></div>
+        </section>
+
+        <!-- Calendar -->
+        <section id="calendar" class="tab">
+            <div class="section-head">
+                <h2>Calendar</h2>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button class="ghost" id="prev-month">←</button>
+                    <h3 id="calendar-month-display" style="margin: 0; font-size: 32px; font-weight: 800;">Loading...</h3>
+                    <button class="ghost" id="next-month">→</button>
+                </div>
+                <button class="primary" id="quick-add-event">Add Event</button>
+            </div>
+            <div id="calendar"></div>
+        </section>
+    </main>
+
+    <!-- Client Modal -->
+    <dialog id="client-modal" class="modal">
+        <form id="client-form">
+            <h3>Add/Edit Client</h3>
+            <input type="hidden" id="client-id" name="id">
+            <label>Name *<input type="text" id="client-name" name="name" required></label>
+            <label>Phone<input type="tel" id="client-phone" name="phone"></label>
+            <label>Email<input type="email" id="client-email" name="email"></label>
+            <label>Wedding Date<input type="date" id="client-wedding-date" name="weddingDate"></label>
+            <label>Venue<input type="text" id="client-venue" name="venue"></label>
+            <label>Status<select id="client-status" name="status"><option value="Enquiry">Enquiry</option><option value="Follow Up Period">Follow Up Period</option><option value="Confirmed">Confirmed</option></select></label>
+            <label>Follow-up Date<input type="date" id="client-followup" name="followUp"></label>
+            <label>Meeting Date<input type="date" id="client-meeting" name="meetingDate"></label>
+            <label>Notes<textarea id="client-notes" name="notes" rows="3"></textarea></label>
+            <menu><button type="button" onclick="this.closest('dialog').close()">Cancel</button><button type="submit" class="primary">Save Client</button></menu>
+        </form>
+    </dialog>
+
+    <!-- Project Modal - ENHANCED with Real-time Payment Status Updates -->
+    <dialog id="project-modal" class="modal">
+        <form id="project-form">
+            <h3>Add/Edit Project</h3>
+            <input type="hidden" id="project-id" name="id">
+            <label>Client *<select id="project-client" name="clientId" required><option value="">Select a client</option></select></label>
+            <label>Final Amount (₹) *<input type="number" id="project-final-amount" name="finalAmount" min="0" step="0.01" required></label>
+            <label>Advance Paid (₹)<input type="number" id="project-advance" name="advance" min="0" step="0.01"></label>
+            <label>Payment Status<select id="project-payment-status" name="paymentStatus"><option value="Pending">Pending</option><option value="Partial">Partial</option><option value="Completed">Completed</option></select></label>
+            <!-- Payment Status Preview -->
+            <div id="payment-status-preview" class="payment-status-preview" style="display:none;"></div>
+            <menu><button type="button" onclick="this.closest('dialog').close()">Cancel</button><button type="submit" class="primary">Save Project</button></menu>
+        </form>
+    </dialog>
+
+    <!-- Design Modal -->
+    <dialog id="design-modal" class="modal">
+        <form id="design-form">
+            <h3>Add/Edit Design</h3>
+            <input type="hidden" id="design-id" name="id">
+            <label>Name *<input type="text" id="design-name" name="name" required></label>
+            <label>Category<select id="design-category" name="category"><option value="Wedding Decor">Wedding Decor</option><option value="Bridal Makeup">Bridal Makeup</option><option value="Photography">Photography</option><option value="Catering">Catering</option><option value="Other">Other</option></select></label>
+            <label>Description<textarea id="design-description" name="description" rows="3"></textarea></label>
+            <label class="file-label">Upload Images<input type="file" id="design-images" accept="image/*" multiple></label>
+            <menu><button type="button" onclick="this.closest('dialog').close()">Cancel</button><button type="submit" class="primary">Save Design</button></menu>
+        </form>
+    </dialog>
+
+    <!-- Event Modal -->
+    <dialog id="event-modal" class="modal">
+        <form id="event-form">
+            <h3>Add/Edit Event</h3>
+            <input type="hidden" id="event-id" name="id">
+            <label>Event Title *<input type="text" id="event-title" name="title" required></label>
+            <label>Date *<input type="date" id="event-date" name="date" required></label>
+            <label>Type<select id="event-type" name="type"><option value="wedding">Wedding</option><option value="meeting">Meeting</option><option value="follow">Follow-up</option></select></label>
+            <label>Notes<textarea id="event-notes" name="notes" rows="3"></textarea></label>
+            <menu><button type="button" onclick="this.closest('dialog').close()">Cancel</button><button type="submit" class="primary">Save Event</button></menu>
+        </form>
+    </dialog>
+
+    <!-- Project Detail Modal - ENHANCED Element Sheet with File Upload -->
+    <dialog id="project-detail-modal" class="modal" style="max-width: 1000px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 16px;">
+            <h2 style="margin: 0;">Project Details</h2>
+            <button id="project-detail-close" style="background: none; border: 2px solid #d1d5db; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px;">×</button>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div style="display: flex; gap: 8px; padding: 0 20px; margin-bottom: 20px;">
+            <button class="tab-btn active" data-tab="overview" onclick="setProjectDetailTab('overview')">Overview</button>
+            <button class="tab-btn" data-tab="cost-sheet" onclick="setProjectDetailTab('cost-sheet')">Cost Sheet</button>
+            <button class="tab-btn" data-tab="element-sheet" onclick="setProjectDetailTab('element-sheet')">Element Sheet</button>
+        </div>
+
+        <div style="padding: 0 20px 20px;">
+            <!-- Overview Tab -->
+            <div id="overview-content" class="tab-content active">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <p><strong>Client:</strong> <span id="project-detail-client">—</span></p>
+                    <p><strong>Payment Status:</strong> <span id="project-detail-payment-status">—</span></p>
+                    <p><strong>Final Amount:</strong> <span id="project-detail-final">₹0</span></p>
+                    <p><strong>Advance:</strong> <span id="project-detail-advance">₹0</span></p>
+                </div>
+
+                <!-- Overview Media Upload Section -->
+                <div class="overview-upload-section">
+                    <h4 style="margin: 0 0 12px 0; color: #374151;">Project Media</h4>
+                    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px;">
+                        <input type="file" id="overview-media-file" accept="image/*,video/*" multiple style="flex: 1; min-width: 200px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; background: white;">
+                        <button id="add-overview-media-file" class="primary" style="white-space: nowrap;">Upload Media</button>
+                    </div>
+                    <p style="margin: 0; font-size: 12px; color: #6b7280;">Upload project photos and videos • Max file size: 50MB per file</p>
+                </div>
+
+                <div id="overview-media-container" class="overview-media-grid">
+                    <!-- Overview media files will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Cost Sheet Tab -->
+            <div id="cost-sheet-content" class="tab-content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto; gap: 8px; margin-bottom: 16px; align-items: end;">
+                    <input type="text" id="cost-item" placeholder="Item/Service" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    <input type="text" id="cost-vendor" placeholder="Vendor" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    <input type="number" id="cost-estimated" placeholder="Estimated (₹)" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    <input type="number" id="cost-actual" placeholder="Actual (₹)" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    <input type="text" id="cost-notes" placeholder="Notes" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    <button class="primary" data-act="add-cost-item" style="padding: 8px 12px; white-space: nowrap;">Add</button>
+                </div>
+                
+                <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                    <button class="action" data-act="export-cost-sheet">Export CSV</button>
+                    <button class="action" data-act="import-cost-sheet">Import CSV</button>
+                </div>
+
+                <table class="table" id="cost-table" style="margin-bottom: 16px;">
+                    <thead>
+                        <tr><th>Item</th><th>Vendor</th><th>Estimated</th><th>Actual</th><th>Notes</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr style="font-weight: bold; background: #f9fafb;">
+                            <td>Total</td><td>—</td><td id="cost-total-estimated">₹0</td><td id="cost-total-actual">₹0</td><td>—</td><td>—</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- UPDATED Element Sheet Tab - Compact with File Upload + Preview & Download -->
+            <div id="element-sheet-content" class="tab-content">
+                <div class="element-sheet-container">
+                    <h4 style="margin: 0 0 16px 0; color: #374151; font-size: 18px; font-weight: 600;">📝 Project Elements Required</h4>
+                    <p style="margin: 0 0 16px 0; font-size: 14px; color: #6b7280; line-height: 1.5;">
+                        List project elements below or upload documents (Excel, Word, PDF). Notes auto-save while typing.
+                    </p>
+                    
+                    <!-- COMPACT textarea (30% of original size) -->
+                    <textarea 
+                        id="element-sheet-text" 
+                        class="element-sheet-textarea" 
+                        placeholder="🎯 Brief project notes...
+
+
+📋 Add specific requirements, quantities, colors..."
+                    ></textarea>
+                    
+                    <!-- Auto-save indicator -->
+                    <div class="auto-save-indicator" id="auto-save-indicator">
+                        ✅ Auto-saved
+                    </div>
+                    
+                    <!-- File Upload Section -->
+                    <div class="element-file-upload">
+                        <h5 style="margin: 0 0 12px 0; color: #047857; font-weight: 600;">📎 Upload Element Documents</h5>
+                        <p style="margin: 0 0 12px 0; font-size: 13px; color: #6b7280;">Upload Excel sheets, Word docs, or PDFs containing detailed project elements</p>
+                        <input type="file" id="element-file-input" class="element-file-input" accept=".xlsx,.xls,.doc,.docx,.pdf" multiple>
+                        <button id="upload-element-files" class="primary" style="margin-top: 8px; background: #059669;">📤 Upload Files</button>
+                        
+                        <!-- Uploaded Files Display -->
+                        <div id="element-uploaded-files" class="element-uploaded-files">
+                            <!-- Uploaded files will appear here -->
+                        </div>
+                    </div>
+                    
+                    <div class="element-sheet-actions">
+                        <button class="action" id="export-element-sheet-word" style="background: #2563eb; color: white; font-weight: 600;">📄 Export as Word Document</button>
+                        <button class="action warn" id="clear-element-sheet" style="border-color: #ef4444; color: #ef4444;">🗑️ Clear All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- MAXIMIZED DOCUMENT HEIGHT: Full Screen File Preview Modal with Optimized Document Display -->
+    <dialog id="file-preview-modal" class="preview-modal">
+        <div class="preview-modal-header">
+            <h3 id="preview-modal-title">File Preview</h3>
+            <button id="close-preview-modal" style="background: none; border: 2px solid #d1d5db; border-radius: 6px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px;">×</button>
+        </div>
+        <div class="preview-modal-content">
+            <div id="preview-content">
+                <!-- Preview content will be loaded here -->
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" hidden></div>
+
+    <script>
+        /* WeddingCRM - Complete Application with MAXIMIZED DOCUMENT HEIGHT File Preview */
+        console.log('WeddingCraft CRM Loading...');
+        
+        // Core application state
+        const state = {
+            clients: JSON.parse(localStorage.getItem('wcrm_clients') || '[]'),
+            projects: JSON.parse(localStorage.getItem('wcrm_projects') || '[]'),
+            designs: JSON.parse(localStorage.getItem('wcrm_designs') || '[]'),
+            events: JSON.parse(localStorage.getItem('wcrm_events') || '[]'),
+            monthOffset: 0,
+            activeProjectId: null
+        };
+
+        // Utility functions
+        function uid() {
+            return Math.random().toString(36).slice(2, 9);
+        }
+
+        function toast(msg, t = 2200) {
+            const el = document.getElementById('toast');
+            if (el) {
+                el.textContent = msg;
+                el.hidden = false;
+                clearTimeout(el._timeout);
+                el._timeout = setTimeout(() => el.hidden = true, t);
+            }
+        }
+
+        function persistAll() {
+            try {
+                localStorage.setItem('wcrm_clients', JSON.stringify(state.clients));
+                localStorage.setItem('wcrm_projects', JSON.stringify(state.projects));
+                localStorage.setItem('wcrm_designs', JSON.stringify(state.designs));
+                localStorage.setItem('wcrm_events', JSON.stringify(state.events));
+            } catch (e) {
+                console.error('Error saving data:', e);
+                toast('Error saving data');
+            }
+        }
+
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return '';
+            try {
+                const date = new Date(dateStr);
+                if (isNaN(date.getTime())) return dateStr;
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}-${month}-${year}`;
+            } catch (e) {
+                return dateStr;
+            }
+        }
+
+        function getTodayDateString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Navigation system
+        function setActiveTab(name) {
+            console.log('Switching to tab:', name);
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === name);
+            });
+            
+            // Update tab content
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.id === name);
+            });
+            
+            // Render content for active tab
+            renderAll();
+        }
+
+        // Dashboard Widget Navigation
+        function initDashboardNavigation() {
+            document.addEventListener('click', (e) => {
+                const widget = e.target.closest('.clickable-stat');
+                if (widget && widget.dataset.navigate) {
+                    setActiveTab(widget.dataset.navigate);
+                    toast(`Navigated to ${widget.dataset.navigate.charAt(0).toUpperCase() + widget.dataset.navigate.slice(1).replace('-', ' ')}`);
+                }
+            });
+        }
+
+        // ENHANCED: Payment Status Management Functions
+        function clearValidationErrors(form) {
+            const fields = form.querySelectorAll('input, select');
+            fields.forEach(field => {
+                field.classList.remove('field-error');
+                field.style.borderColor = '';
+                field.style.backgroundColor = '';
+            });
+
+            const errorMessages = form.querySelectorAll('.validation-error');
+            errorMessages.forEach(error => error.remove());
+        }
+
+        function showValidationError(field, message) {
+            field.classList.add('field-error');
+            
+            const existingError = field.parentNode.querySelector('.validation-error');
+            if (existingError) existingError.remove();
+
+            const errorEl = document.createElement('div');
+            errorEl.className = 'validation-error';
+            errorEl.textContent = message;
+            field.parentNode.appendChild(errorEl);
+        }
+
+        function updatePaymentStatus(form) {
+            const finalAmount = Number(form.querySelector('#project-final-amount').value) || 0;
+            const advanceAmount = Number(form.querySelector('#project-advance').value) || 0;
+            const paymentStatusField = form.querySelector('#project-payment-status');
+            const advanceField = form.querySelector('#project-advance');
+            const previewEl = form.querySelector('#payment-status-preview');
+
+            clearValidationErrors(form);
+
+            if (advanceAmount > finalAmount && finalAmount > 0) {
+                showValidationError(advanceField, `Advance payment (₹${advanceAmount.toLocaleString('en-IN')}) cannot exceed final amount (₹${finalAmount.toLocaleString('en-IN')})`);
+                if (previewEl) {
+                    previewEl.style.display = 'block';
+                    previewEl.textContent = '⚠️ Invalid: Advance exceeds final amount';
+                    previewEl.style.background = 'rgba(239,68,68,0.1)';
+                    previewEl.style.borderColor = 'rgba(239,68,68,0.3)';
+                    previewEl.style.color = '#dc2626';
+                }
+                return;
+            }
+
+            let newStatus = 'Pending';
+            let statusMessage = '';
+
+            if (advanceAmount === 0) {
+                newStatus = 'Pending';
+                statusMessage = '💰 Status: Pending (No advance received)';
+            } else if (advanceAmount >= finalAmount && finalAmount > 0) {
+                newStatus = 'Completed';
+                statusMessage = '✅ Status: Completed (Full payment received)';
+            } else if (advanceAmount > 0) {
+                newStatus = 'Partial';
+                const remaining = finalAmount - advanceAmount;
+                statusMessage = `🟡 Status: Partial (₹${remaining.toLocaleString('en-IN')} remaining)`;
+            }
+
+            paymentStatusField.value = newStatus;
+
+            if (previewEl && finalAmount > 0) {
+                previewEl.style.display = 'block';
+                previewEl.textContent = statusMessage;
+                previewEl.style.background = 'rgba(37,99,235,0.08)';
+                previewEl.style.borderColor = 'rgba(37,99,235,0.2)';
+                previewEl.style.color = '#1d4ed8';
+            } else if (previewEl) {
+                previewEl.style.display = 'none';
+            }
+        }
+
+        // ENHANCED: Auto-save Element Sheet Function
+        let autoSaveTimeout;
+        function autoSaveElementSheet() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                const textarea = document.getElementById('element-sheet-text');
+                const indicator = document.getElementById('auto-save-indicator');
+                
+                if (!textarea) return;
+                
+                const project = state.projects.find(p => p.id === state.activeProjectId);
+                if (!project) return;
+                
+                project.elementSheetText = textarea.value;
+                persistAll();
+                
+                if (indicator) {
+                    indicator.classList.add('visible');
+                    setTimeout(() => {
+                        indicator.classList.remove('visible');
+                    }, 2000);
+                }
+                
+                console.log('✅ Element Sheet auto-saved');
+            }, 800);
+        }
+
+        // MAXIMIZED DOCUMENT HEIGHT: File Preview Functionality
+        function previewElementFile(index) {
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project || !project.elementFiles || !project.elementFiles[index]) {
+                toast('File not found');
+                return;
+            }
+
+            const file = project.elementFiles[index];
+            const modal = document.getElementById('file-preview-modal');
+            const titleEl = document.getElementById('preview-modal-title');
+            const contentEl = document.getElementById('preview-content');
+
+            titleEl.textContent = `Preview: ${file.name}`;
+            contentEl.innerHTML = '';
+
+            // Check file type and show appropriate preview
+            const fileExt = file.name.split('.').pop().toLowerCase();
+            
+            if (fileExt === 'pdf') {
+                // PDF preview using embedded PDF viewer - MAXIMIZED HEIGHT
+                contentEl.innerHTML = `<iframe class="preview-iframe" src="${file.src}" type="application/pdf"></iframe>`;
+            } else if (['doc', 'docx', 'xlsx', 'xls'].includes(fileExt)) {
+                // For Office documents, show information that preview is not available
+                contentEl.innerHTML = `
+                    <div class="preview-unavailable">
+                        <div class="icon">${getFileIcon(file.name)}</div>
+                        <h3>${file.name}</h3>
+                        <p>Preview not available for ${fileExt.toUpperCase()} files</p>
+                        <p><strong>File Size:</strong> ${formatFileSize(file.size)}</p>
+                        <p><strong>Upload Date:</strong> ${new Date(file.uploadDate).toLocaleDateString()}</p>
+                        <br>
+                        <button class="primary" onclick="downloadElementFile(${index})" style="padding: 12px 20px; font-size: 16px;">📥 Download File</button>
+                    </div>
+                `;
+            } else {
+                // Generic file info
+                contentEl.innerHTML = `
+                    <div class="preview-unavailable">
+                        <div class="icon">📄</div>
+                        <h3>${file.name}</h3>
+                        <p>Preview not available for this file type</p>
+                        <p><strong>File Size:</strong> ${formatFileSize(file.size)}</p>
+                        <p><strong>Upload Date:</strong> ${new Date(file.uploadDate).toLocaleDateString()}</p>
+                        <br>
+                        <button class="primary" onclick="downloadElementFile(${index})" style="padding: 12px 20px; font-size: 16px;">📥 Download File</button>
+                    </div>
+                `;
+            }
+
+            try {
+                modal.showModal();
+            } catch (e) {
+                modal.style.display = 'block';
+            }
+        }
+
+        // NEW: File Download Functionality
+        function downloadElementFile(index) {
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project || !project.elementFiles || !project.elementFiles[index]) {
+                toast('File not found');
+                return;
+            }
+
+            const file = project.elementFiles[index];
+            
+            try {
+                const link = document.createElement('a');
+                link.href = file.src;
+                link.download = file.name;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                toast(`📥 Downloaded: ${file.name}`);
+            } catch (error) {
+                console.error('Download error:', error);
+                toast('Error downloading file');
+            }
+        }
+
+        // Event handlers
+        function initEventHandlers() {
+            // Tab navigation
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (btn.dataset.tab) {
+                        setActiveTab(btn.dataset.tab);
+                    }
+                });
+            });
+
+            // Add buttons
+            const addClientBtn = document.getElementById('add-client');
+            if (addClientBtn) {
+                addClientBtn.addEventListener('click', () => openClientModal());
+            }
+
+            const addProjectBtn = document.getElementById('add-project');
+            if (addProjectBtn) {
+                addProjectBtn.addEventListener('click', () => openProjectModal());
+            }
+
+            const addDesignBtn = document.getElementById('add-design');
+            if (addDesignBtn) {
+                addDesignBtn.addEventListener('click', () => openDesignModal());
+            }
+
+            const quickAddEventBtn = document.getElementById('quick-add-event');
+            if (quickAddEventBtn) {
+                quickAddEventBtn.addEventListener('click', () => openEventModal());
+            }
+
+            // Calendar navigation
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+            
+            if (prevMonthBtn) {
+                prevMonthBtn.addEventListener('click', () => {
+                    state.monthOffset--;
+                    renderCalendar();
+                });
+            }
+            
+            if (nextMonthBtn) {
+                nextMonthBtn.addEventListener('click', () => {
+                    state.monthOffset++;
+                    renderCalendar();
+                });
+            }
+
+            // Export buttons
+            const exportReceivablesBtn = document.getElementById('export-receivables');
+            const exportClientDataBtn = document.getElementById('export-client-data');
+            
+            if (exportReceivablesBtn) {
+                exportReceivablesBtn.addEventListener('click', exportReceivables);
+            }
+            
+            if (exportClientDataBtn) {
+                exportClientDataBtn.addEventListener('click', exportClientData);
+            }
+
+            // Project detail modal close
+            const projectDetailCloseBtn = document.getElementById('project-detail-close');
+            if (projectDetailCloseBtn) {
+                projectDetailCloseBtn.addEventListener('click', () => {
+                    const modal = document.getElementById('project-detail-modal');
+                    if (modal) modal.close();
+                });
+            }
+
+            // MAXIMIZED DOCUMENT HEIGHT: File preview modal close
+            const closePreviewModalBtn = document.getElementById('close-preview-modal');
+            if (closePreviewModalBtn) {
+                closePreviewModalBtn.addEventListener('click', () => {
+                    const modal = document.getElementById('file-preview-modal');
+                    if (modal) {
+                        try {
+                            modal.close();
+                        } catch (e) {
+                            modal.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
+            // Global search
+            const globalSearch = document.getElementById('global-search');
+            if (globalSearch) {
+                globalSearch.addEventListener('input', renderAll);
+            }
+
+            // Filter change handlers
+            initClientFilters();
+
+            // Form submissions
+            initFormHandlers();
+
+            // ENHANCED: Element Sheet handlers
+            initElementSheetHandlers();
+        }
+
+        // ENHANCED: Element Sheet handlers with auto-save and file upload
+        function initElementSheetHandlers() {
+            // Auto-save functionality
+            document.addEventListener('input', (e) => {
+                if (e.target.id === 'element-sheet-text') {
+                    autoSaveElementSheet();
+                }
+            });
+
+            const exportBtn = document.getElementById('export-element-sheet-word');
+            const clearBtn = document.getElementById('clear-element-sheet');
+            const uploadBtn = document.getElementById('upload-element-files');
+
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportElementSheetAsWord);
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', clearElementSheet);
+            }
+
+            if (uploadBtn) {
+                uploadBtn.addEventListener('click', uploadElementFiles);
+            }
+        }
+
+        // NEW: File Upload Functions for Element Sheet
+        function uploadElementFiles() {
+            const fileInput = document.getElementById('element-file-input');
+            if (!fileInput || fileInput.files.length === 0) {
+                toast('Please select files to upload');
+                return;
+            }
+
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project) {
+                toast('Project not found');
+                return;
+            }
+
+            if (!project.elementFiles) project.elementFiles = [];
+
+            const files = Array.from(fileInput.files);
+            let processedCount = 0;
+
+            files.forEach(file => {
+                const allowedTypes = ['.xlsx', '.xls', '.doc', '.docx', '.pdf'];
+                const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+                
+                if (!allowedTypes.includes(fileExt)) {
+                    toast(`File "${file.name}" is not a supported format`);
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    toast(`File "${file.name}" is too large (max 10MB)`);
+                    return;
+                }
+
+                fileToDataURL(file)
+                    .then(dataUrl => {
+                        project.elementFiles.push({
+                            id: uid(),
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            src: dataUrl,
+                            uploadDate: new Date().toISOString()
+                        });
+
+                        processedCount++;
+                        if (processedCount === files.length) {
+                            persistAll();
+                            renderElementFiles();
+                            toast(`${processedCount} file(s) uploaded successfully`);
+                            fileInput.value = '';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error uploading file:', error);
+                        toast(`Error uploading "${file.name}"`);
+                    });
+            });
+        }
+
+        // UPDATED: Render Element Files with Preview and Download buttons
+        function renderElementFiles() {
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project) return;
+
+            if (!project.elementFiles) project.elementFiles = [];
+
+            const container = document.getElementById('element-uploaded-files');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            if (project.elementFiles.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 12px; font-size: 13px;">No files uploaded yet</p>';
+                return;
+            }
+
+            project.elementFiles.forEach((file, index) => {
+                const fileEl = document.createElement('div');
+                fileEl.className = 'uploaded-file-item';
+
+                const fileIcon = getFileIcon(file.name);
+                
+                fileEl.innerHTML = `
+                    <div class="file-info">
+                        <span class="file-icon">${fileIcon}</span>
+                        <div class="file-details">
+                            <div class="file-name">${escapeHTML(file.name)}</div>
+                            <div class="file-size">${formatFileSize(file.size)} • Uploaded ${new Date(file.uploadDate).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="action" onclick="previewElementFile(${index})" style="font-size: 11px; padding: 4px 8px; background: #3b82f6; color: white; border-color: #3b82f6;">👁️ Preview</button>
+                        <button class="action" onclick="downloadElementFile(${index})" style="font-size: 11px; padding: 4px 8px; background: #059669; color: white; border-color: #059669;">📥 Download</button>
+                        <button class="action warn" onclick="removeElementFile(${index})" style="font-size: 11px; padding: 4px 8px;">Remove</button>
+                    </div>
+                `;
+
+                container.appendChild(fileEl);
+            });
+        }
+
+        function getFileIcon(fileName) {
+            const ext = fileName.split('.').pop().toLowerCase();
+            switch (ext) {
+                case 'xlsx':
+                case 'xls': return '📊';
+                case 'doc':
+                case 'docx': return '📄';
+                case 'pdf': return '📕';
+                default: return '📎';
+            }
+        }
+
+        function removeElementFile(index) {
+            if (!confirm('Remove this file? This cannot be undone.')) return;
+
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project || !project.elementFiles) return;
+
+            project.elementFiles.splice(index, 1);
+            persistAll();
+            renderElementFiles();
+            toast('File removed');
+        }
+
+        // Client filters
+        function initClientFilters() {
+            const filters = [
+                'clients-status-filter',
+                'clients-wedding-date-filter', 
+                'clients-venue-filter',
+                'clients-followup-date-filter',
+                'clients-meeting-date-filter'
+            ];
+
+            filters.forEach(filterId => {
+                const filterEl = document.getElementById(filterId);
+                if (filterEl) {
+                    filterEl.addEventListener('change', renderClients);
+                }
+            });
+
+            const clearFiltersBtn = document.getElementById('clear-all-filters');
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', () => {
+                    filters.forEach(filterId => {
+                        const filterEl = document.getElementById(filterId);
+                        if (filterEl) filterEl.value = 'all';
+                    });
+                    renderClients();
+                    toast('All filters cleared');
+                });
+            }
+        }
+
+        // Form handlers
+        function initFormHandlers() {
+            const clientForm = document.getElementById('client-form');
+            if (clientForm) {
+                clientForm.addEventListener('submit', handleClientSubmit);
+            }
+
+            const projectForm = document.getElementById('project-form');
+            if (projectForm) {
+                projectForm.addEventListener('submit', handleProjectSubmit);
+            }
+
+            const designForm = document.getElementById('design-form');
+            if (designForm) {
+                designForm.addEventListener('submit', handleDesignSubmit);
+            }
+
+            const eventForm = document.getElementById('event-form');
+            if (eventForm) {
+                eventForm.addEventListener('submit', handleEventSubmit);
+            }
+        }
+
+        // Modal functions
+        function openClientModal(id = null) {
+            const modal = document.getElementById('client-modal');
+            const form = document.getElementById('client-form');
+            
+            if (!modal || !form) return;
+            
+            form.reset();
+            
+            if (id) {
+                const client = state.clients.find(c => c.id === id);
+                if (client) {
+                    document.getElementById('client-id').value = client.id;
+                    document.getElementById('client-name').value = client.name || '';
+                    document.getElementById('client-phone').value = client.phone || '';
+                    document.getElementById('client-email').value = client.email || '';
+                    document.getElementById('client-wedding-date').value = client.weddingDate || '';
+                    document.getElementById('client-venue').value = client.venue || '';
+                    document.getElementById('client-status').value = client.status || 'Enquiry';
+                    document.getElementById('client-followup').value = client.followUp || '';
+                    document.getElementById('client-meeting').value = client.meetingDate || '';
+                    document.getElementById('client-notes').value = client.notes || '';
+                }
+            }
+            
+            modal.showModal();
+        }
+
+        // ENHANCED: Project Modal with Real-time Payment Status Updates
+        function openProjectModal(id = null) {
+            const modal = document.getElementById('project-modal');
+            const form = document.getElementById('project-form');
+            const clientSelect = document.getElementById('project-client');
+            
+            if (!modal || !form || !clientSelect) return;
+            
+            form.reset();
+            clearValidationErrors(form);
+            
+            const previewEl = form.querySelector('#payment-status-preview');
+            if (previewEl) previewEl.style.display = 'none';
+            
+            clientSelect.innerHTML = '<option value="">Select a client</option>';
+            state.clients.forEach(c => {
+                const option = document.createElement('option');
+                option.value = c.id;
+                option.textContent = c.name || 'Unnamed Client';
+                clientSelect.appendChild(option);
+            });
+            
+            if (id) {
+                const project = state.projects.find(p => p.id === id);
+                if (project) {
+                    document.getElementById('project-id').value = project.id;
+                    document.getElementById('project-client').value = project.clientId || '';
+                    document.getElementById('project-final-amount').value = project.finalAmount || '';
+                    document.getElementById('project-advance').value = project.advance || '';
+                    document.getElementById('project-payment-status').value = project.paymentStatus || 'Pending';
+                }
+            }
+
+            const finalAmountField = form.querySelector('#project-final-amount');
+            const advanceField = form.querySelector('#project-advance');
+            
+            finalAmountField.addEventListener('input', () => updatePaymentStatus(form));
+            advanceField.addEventListener('input', () => updatePaymentStatus(form));
+            
+            updatePaymentStatus(form);
+            
+            modal.showModal();
+        }
+
+        function openDesignModal(id = null) {
+            const modal = document.getElementById('design-modal');
+            const form = document.getElementById('design-form');
+            
+            if (!modal || !form) return;
+            
+            form.reset();
+            
+            if (id) {
+                const design = state.designs.find(d => d.id === id);
+                if (design) {
+                    document.getElementById('design-id').value = design.id;
+                    document.getElementById('design-name').value = design.name || '';
+                    document.getElementById('design-category').value = design.category || '';
+                    document.getElementById('design-description').value = design.description || '';
+                }
+            }
+            
+            modal.showModal();
+        }
+
+        function openEventModal(id = null) {
+            const modal = document.getElementById('event-modal');
+            const form = document.getElementById('event-form');
+            
+            if (!modal || !form) return;
+            
+            form.reset();
+            
+            if (id) {
+                const event = state.events.find(e => e.id === id);
+                if (event) {
+                    document.getElementById('event-id').value = event.id;
+                    document.getElementById('event-title').value = event.title || '';
+                    document.getElementById('event-date').value = event.date || '';
+                    document.getElementById('event-type').value = event.type || 'wedding';
+                    document.getElementById('event-notes').value = event.notes || '';
+                }
+            }
+            
+            modal.showModal();
+        }
+
+        // Form submission handlers
+        function handleClientSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const id = formData.get('id');
+            
+            const clientData = {
+                id: id || uid(),
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                weddingDate: formData.get('weddingDate'),
+                venue: formData.get('venue'),
+                status: formData.get('status'),
+                followUp: formData.get('followUp'),
+                meetingDate: formData.get('meetingDate'),
+                notes: formData.get('notes')
+            };
+            
+            if (id) {
+                const idx = state.clients.findIndex(c => c.id === id);
+                if (idx !== -1) state.clients[idx] = clientData;
+            } else {
+                state.clients.push(clientData);
+            }
+            
+            persistAll();
+            renderAll();
+            document.getElementById('client-modal').close();
+            toast(id ? 'Client updated' : 'Client added');
+        }
+
+        // ENHANCED: Project Submit with Advanced Validation
+        function handleProjectSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const id = formData.get('id');
+            const clientId = formData.get('clientId');
+            const finalAmount = Number(formData.get('finalAmount')) || 0;
+            const advance = Number(formData.get('advance')) || 0;
+            const form = e.target;
+            
+            clearValidationErrors(form);
+            
+            if (!clientId) {
+                toast('Please select a client');
+                return;
+            }
+            
+            if (advance > finalAmount && finalAmount > 0) {
+                showValidationError(
+                    form.querySelector('#project-advance'), 
+                    `Advance payment (₹${advance.toLocaleString('en-IN')}) cannot exceed final amount (₹${finalAmount.toLocaleString('en-IN')})`
+                );
+                toast('❌ Advance payment cannot exceed final amount');
+                return;
+            }
+            
+            if (!id && state.projects.some(p => p.clientId === clientId)) {
+                toast('This client already has a project');
+                return;
+            }
+            
+            let paymentStatus = 'Pending';
+            if (advance === 0) {
+                paymentStatus = 'Pending';
+            } else if (advance >= finalAmount && finalAmount > 0) {
+                paymentStatus = 'Completed';
+            } else if (advance > 0) {
+                paymentStatus = 'Partial';
+            }
+            
+            const projectData = {
+                id: id || uid(),
+                clientId: clientId,
+                finalAmount: finalAmount,
+                advance: advance,
+                paymentStatus: paymentStatus,
+                costSheet: [],
+                elementSheetText: '',
+                elementFiles: [],
+                overviewMedia: []
+            };
+            
+            if (id) {
+                const idx = state.projects.findIndex(p => p.id === id);
+                if (idx !== -1) {
+                    const existing = state.projects[idx];
+                    projectData.costSheet = existing.costSheet || [];
+                    projectData.elementSheetText = existing.elementSheetText || '';
+                    projectData.elementFiles = existing.elementFiles || [];
+                    projectData.overviewMedia = existing.overviewMedia || [];
+                    state.projects[idx] = projectData;
+                }
+            } else {
+                state.projects.push(projectData);
+            }
+            
+            if (advance > 0) {
+                const client = state.clients.find(c => c.id === clientId);
+                if (client && client.status !== 'Confirmed') {
+                    client.status = 'Confirmed';
+                }
+            }
+            
+            persistAll();
+            renderAll();
+            document.getElementById('project-modal').close();
+            
+            const statusMsg = paymentStatus === 'Completed' ? '✅ Project saved - Payment completed!' : 
+                            paymentStatus === 'Partial' ? `🟡 Project saved - Partial payment (₹${(finalAmount - advance).toLocaleString('en-IN')} remaining)` : 
+                            '💰 Project saved - Payment pending';
+            toast(statusMsg);
+        }
+
+        function handleDesignSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const id = formData.get('id');
+            const files = document.getElementById('design-images').files;
+            
+            const designData = {
+                id: id || uid(),
+                name: formData.get('name'),
+                category: formData.get('category'),
+                description: formData.get('description'),
+                images: []
+            };
+            
+            if (id) {
+                const existing = state.designs.find(d => d.id === id);
+                if (existing) {
+                    designData.images = existing.images || [];
+                }
+            }
+            
+            const promises = [];
+            for (let i = 0; i < files.length; i++) {
+                promises.push(fileToDataURL(files[i]));
+            }
+            
+            Promise.all(promises)
+                .then(results => {
+                    designData.images.push(...results);
+                    
+                    if (id) {
+                        const idx = state.designs.findIndex(d => d.id === id);
+                        if (idx !== -1) state.designs[idx] = designData;
+                    } else {
+                        state.designs.push(designData);
+                    }
+                    
+                    persistAll();
+                    renderAll();
+                    document.getElementById('design-modal').close();
+                    toast(id ? 'Design updated' : 'Design added');
+                })
+                .catch(error => {
+                    console.error('Error processing images:', error);
+                    toast('Error uploading images');
+                });
+        }
+
+        function handleEventSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const id = formData.get('id');
+            
+            const eventData = {
+                id: id || uid(),
+                title: formData.get('title'),
+                date: formData.get('date'),
+                type: formData.get('type'),
+                notes: formData.get('notes')
+            };
+            
+            if (id) {
+                const idx = state.events.findIndex(e => e.id === id);
+                if (idx !== -1) state.events[idx] = eventData;
+            } else {
+                state.events.push(eventData);
+            }
+            
+            persistAll();
+            renderAll();
+            document.getElementById('event-modal').close();
+            toast(id ? 'Event updated' : 'Event added');
+        }
+
+        // File handling
+        function fileToDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Render functions
+        function renderAll() {
+            renderDashboard();
+            renderClients();
+            renderProjects();
+            renderPendingPayments();
+            renderDesigns();
+            renderCalendar();
+            populateClientFilters();
+        }
+
+        function renderDashboard() {
+            const totalClients = state.clients.length;
+            const activeProjects = state.projects.length;
+            const pendingAmount = state.projects.reduce((sum, p) => {
+                return sum + Math.max(0, (p.finalAmount || 0) - (p.advance || 0));
+            }, 0);
+
+            const totalClientsEl = document.querySelector('#total-clients .stat');
+            const activeProjectsEl = document.querySelector('#active-projects .stat');
+            const pendingPaymentsEl = document.querySelector('#pending-payments .stat');
+
+            if (totalClientsEl) totalClientsEl.textContent = totalClients;
+            if (activeProjectsEl) activeProjectsEl.textContent = activeProjects;
+            if (pendingPaymentsEl) pendingPaymentsEl.textContent = '₹' + pendingAmount.toLocaleString('en-IN');
+
+            renderTodaysTodo();
+
+            const meetingsEl = document.getElementById('meeting-reminders');
+            if (meetingsEl) {
+                meetingsEl.innerHTML = '';
+                const now = new Date();
+                const upcomingMeetings = state.clients
+                    .filter(c => c.meetingDate && new Date(c.meetingDate) >= now)
+                    .sort((a, b) => new Date(a.meetingDate) - new Date(b.meetingDate))
+                    .slice(0, 5);
+
+                if (upcomingMeetings.length === 0) {
+                    meetingsEl.innerHTML = '<li>No upcoming meetings</li>';
+                } else {
+                    upcomingMeetings.forEach(c => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<strong>${escapeHTML(c.name)}</strong><br><small>Meeting: ${formatDateDisplay(c.meetingDate)}</small>`;
+                        meetingsEl.appendChild(li);
+                    });
+                }
+            }
+
+            const followUpsEl = document.getElementById('followup-reminders');
+            if (followUpsEl) {
+                followUpsEl.innerHTML = '';
+                const now = new Date();
+                const upcomingFollowUps = state.clients
+                    .filter(c => c.followUp && new Date(c.followUp) >= now)
+                    .sort((a, b) => new Date(a.followUp) - new Date(b.followUp))
+                    .slice(0, 5);
+
+                if (upcomingFollowUps.length === 0) {
+                    followUpsEl.innerHTML = '<li>No upcoming follow-ups</li>';
+                } else {
+                    upcomingFollowUps.forEach(c => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<strong>${escapeHTML(c.name)}</strong><br><small>Follow-up: ${formatDateDisplay(c.followUp)}</small>`;
+                        followUpsEl.appendChild(li);
+                    });
+                }
+            }
+        }
+
+        function renderTodaysTodo() {
+            const todaysTodoEl = document.getElementById('todays-todo');
+            if (!todaysTodoEl) return;
+
+            todaysTodoEl.innerHTML = '';
+            const today = getTodayDateString();
+            
+            let todoItems = [];
+
+            const todaysMeetings = state.clients.filter(c => c.meetingDate === today);
+            todaysMeetings.forEach(c => {
+                todoItems.push({
+                    type: 'meeting',
+                    client: c,
+                    action: 'Meeting scheduled'
+                });
+            });
+
+            const todaysFollowUps = state.clients.filter(c => c.followUp === today);
+            todaysFollowUps.forEach(c => {
+                todoItems.push({
+                    type: 'follow',
+                    client: c,
+                    action: 'Follow-up due'
+                });
+            });
+
+            const todaysEvents = state.events.filter(e => e.date === today);
+            todaysEvents.forEach(e => {
+                todoItems.push({
+                    type: e.type || 'meeting',
+                    event: e,
+                    action: e.title
+                });
+            });
+
+            if (todoItems.length === 0) {
+                todaysTodoEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #6b7280;">No tasks scheduled for today</div>';
+                return;
+            }
+
+            todoItems.forEach(item => {
+                const todoItem = document.createElement('div');
+                todoItem.className = 'todo-item';
+                
+                if (item.client) {
+                    todoItem.innerHTML = `
+                        <span class="type-badge ${item.type}">${item.type === 'meeting' ? 'Meeting' : 'Follow-up'}</span>
+                        <div style="flex: 1;">
+                            <div class="client-name">${escapeHTML(item.client.name)}</div>
+                            <div class="time-info">${item.action} • ${escapeHTML(item.client.phone || 'No phone')}</div>
+                        </div>
+                    `;
+                    todoItem.onclick = () => openClientModal(item.client.id);
+                } else if (item.event) {
+                    todoItem.innerHTML = `
+                        <span class="type-badge ${item.type}">Event</span>
+                        <div style="flex: 1;">
+                            <div class="client-name">${escapeHTML(item.event.title)}</div>
+                            <div class="time-info">${escapeHTML(item.event.notes || 'No additional details')}</div>
+                        </div>
+                    `;
+                    todoItem.onclick = () => openEventModal(item.event.id);
+                }
+                
+                todoItem.style.cursor = 'pointer';
+                todaysTodoEl.appendChild(todoItem);
+            });
+        }
+
+        function renderClients() {
+            const tbody = document.querySelector('#clients-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            const q = (document.getElementById('global-search')?.value || '').trim().toLowerCase();
+            
+            const statusFilter = document.getElementById('clients-status-filter')?.value || 'all';
+            const weddingDateFilter = document.getElementById('clients-wedding-date-filter')?.value || 'all';
+            const venueFilter = document.getElementById('clients-venue-filter')?.value || 'all';
+            const followupDateFilter = document.getElementById('clients-followup-date-filter')?.value || 'all';
+            const meetingDateFilter = document.getElementById('clients-meeting-date-filter')?.value || 'all';
+
+            const items = state.clients.filter(c => {
+                if (statusFilter !== 'all' && c.status !== statusFilter) return false;
+                if (weddingDateFilter !== 'all' && c.weddingDate !== weddingDateFilter) return false;
+                if (venueFilter !== 'all' && c.venue !== venueFilter) return false;
+                if (followupDateFilter !== 'all' && c.followUp !== followupDateFilter) return false;
+                if (meetingDateFilter !== 'all' && c.meetingDate !== meetingDateFilter) return false;
+                if (!q) return true;
+                return (c.name || '').toLowerCase().includes(q) || 
+                       (c.phone || '').toLowerCase().includes(q) || 
+                       (c.venue || '').toLowerCase().includes(q);
+            });
+
+            items.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${escapeHTML(c.name || '')}</td>
+                    <td>${escapeHTML(c.phone || '')}</td>
+                    <td>${formatDateDisplay(c.weddingDate) || '—'}</td>
+                    <td>${escapeHTML(c.venue || '—')}</td>
+                    <td><span class="badge ${getStatusClass(c.status)}">${escapeHTML(c.status || '')}</span></td>
+                    <td>${formatDateDisplay(c.followUp) || '—'}</td>
+                    <td>${formatDateDisplay(c.meetingDate) || '—'}</td>
+                    <td class="notes-cell">${escapeHTML(c.notes || '—')}</td>
+                    <td class="actions">
+                        <button class="action" onclick="editClient('${c.id}')">Edit</button>
+                        <button class="action warn" onclick="deleteClient('${c.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function getStatusClass(status) {
+            switch (status?.toLowerCase()) {
+                case 'confirmed': return 'good';
+                case 'follow up period': return 'primary';
+                case 'enquiry': return 'muted';
+                default: return 'muted';
+            }
+        }
+
+        function renderProjects() {
+            const tbody = document.querySelector('#projects-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            const q = (document.getElementById('global-search')?.value || '').trim().toLowerCase();
+            
+            const items = state.projects.filter(p => {
+                if (!q) return true;
+                const client = state.clients.find(c => c.id === p.clientId) || {};
+                return (client.name || '').toLowerCase().includes(q);
+            });
+
+            items.forEach(p => {
+                const client = state.clients.find(c => c.id === p.clientId) || {};
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${escapeHTML(client.name || '—')}</td>
+                    <td>₹${(p.finalAmount || 0).toLocaleString('en-IN')}</td>
+                    <td>₹${(p.advance || 0).toLocaleString('en-IN')}</td>
+                    <td>${escapeHTML(p.paymentStatus || 'Pending')}</td>
+                    <td class="actions">
+                        <button class="action" onclick="viewProject('${p.id}')">View</button>
+                        <button class="action" onclick="editProject('${p.id}')">Edit</button>
+                        <button class="action warn" onclick="deleteProject('${p.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderPendingPayments() {
+            const tbody = document.querySelector('#pending-payments-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const items = state.projects.filter(p => {
+                const balance = Math.max(0, (p.finalAmount || 0) - (p.advance || 0));
+                return balance > 0;
+            });
+
+            items.forEach(p => {
+                const client = state.clients.find(c => c.id === p.clientId) || {};
+                const balance = Math.max(0, (p.finalAmount || 0) - (p.advance || 0));
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${escapeHTML(client.name || '—')}</td>
+                    <td>₹${(p.finalAmount || 0).toLocaleString('en-IN')}</td>
+                    <td>₹${(p.advance || 0).toLocaleString('en-IN')}</td>
+                    <td>₹${balance.toLocaleString('en-IN')}</td>
+                    <td>${escapeHTML(p.paymentStatus || 'Pending')}</td>
+                    <td class="actions">
+                        <button class="action" onclick="viewProject('${p.id}')">View Details</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderDesigns() {
+            const grid = document.getElementById('designs-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            const q = (document.getElementById('global-search')?.value || '').trim().toLowerCase();
+            
+            const items = state.designs.filter(d => {
+                if (!q) return true;
+                return (d.name || '').toLowerCase().includes(q) || 
+                       (d.category || '').toLowerCase().includes(q);
+            });
+
+            items.forEach(d => {
+                const card = document.createElement('div');
+                card.className = 'design-card';
+                const imgs = (d.images || []).map(src => `<img src="${src}" alt="Design" loading="lazy">`).join('');
+                card.innerHTML = `
+                    ${imgs}
+                    <div class="meta">
+                        <h4>${escapeHTML(d.name || 'Untitled')}</h4>
+                        <p>${escapeHTML(d.category || '—')}</p>
+                        <div class="actions">
+                            <button class="action" onclick="editDesign('${d.id}')">Edit</button>
+                            <button class="action" onclick="exportDesign('${d.id}')">Export</button>
+                            <button class="action warn" onclick="deleteDesign('${d.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderCalendar() {
+            const cal = document.getElementById('calendar');
+            if (!cal) return;
+            
+            cal.innerHTML = `
+                <div class="legend">
+                    <div class="legend-item"><span class="dot wedding"></span><span>Wedding</span></div>
+                    <div class="legend-item"><span class="dot meeting"></span><span>Meeting</span></div>
+                    <div class="legend-item"><span class="dot follow"></span><span>Follow-up</span></div>
+                </div>
+                <p class="legend">💡 Click follow-up/meeting to edit client • Click wedding to view project details</p>
+            `;
+
+            const today = new Date();
+            const targetDate = new Date(today.getFullYear(), today.getMonth() + state.monthOffset, 1);
+            const year = targetDate.getFullYear();
+            const month = targetDate.getMonth();
+
+            const monthDisplay = document.getElementById('calendar-month-display');
+            if (monthDisplay) {
+                monthDisplay.textContent = targetDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            }
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const grid = document.createElement('div');
+            grid.className = 'calendar-full';
+            
+            const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            headers.forEach(h => {
+                const header = document.createElement('div');
+                header.style.fontWeight = 'bold';
+                header.style.textAlign = 'center';
+                header.style.padding = '8px';
+                header.textContent = h;
+                grid.appendChild(header);
+            });
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'day';
+                grid.appendChild(emptyDay);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'day';
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                dayEl.innerHTML = `<div class="date">${day}</div>`;
+                
+                state.clients.forEach(c => {
+                    if (c.weddingDate === dateStr) {
+                        const badge = document.createElement('div');
+                        badge.className = 'badge wedding clickable-event';
+                        badge.textContent = c.name;
+                        badge.onclick = () => {
+                            const project = state.projects.find(p => p.clientId === c.id);
+                            if (project) {
+                                openProjectDetailModal(project.id);
+                            } else {
+                                toast('No project found for this client');
+                            }
+                        };
+                        dayEl.appendChild(badge);
+                    }
+                    
+                    if (c.meetingDate === dateStr) {
+                        const badge = document.createElement('div');
+                        badge.className = 'badge meeting clickable-event';
+                        badge.textContent = c.name + ' (Meeting)';
+                        badge.onclick = () => openClientModal(c.id);
+                        dayEl.appendChild(badge);
+                    }
+                    
+                    if (c.followUp === dateStr) {
+                        const badge = document.createElement('div');
+                        badge.className = 'badge follow clickable-event';
+                        badge.textContent = c.name + ' (Follow-up)';
+                        badge.onclick = () => openClientModal(c.id);
+                        dayEl.appendChild(badge);
+                    }
+                });
+                
+                state.events.forEach(e => {
+                    if (e.date === dateStr) {
+                        const badge = document.createElement('div');
+                        badge.className = 'badge ' + (e.type || 'meeting') + ' clickable-event';
+                        badge.textContent = e.title;
+                        badge.onclick = () => openEventModal(e.id);
+                        dayEl.appendChild(badge);
+                    }
+                });
+
+                grid.appendChild(dayEl);
+            }
+
+            cal.appendChild(grid);
+        }
+
+        function populateClientFilters() {
+            const uniqueWeddingDates = [...new Set(state.clients.map(c => c.weddingDate).filter(d => d))].sort();
+            const uniqueVenues = [...new Set(state.clients.map(c => c.venue).filter(v => v))].sort();
+            const uniqueFollowupDates = [...new Set(state.clients.map(c => c.followUp).filter(d => d))].sort();
+            const uniqueMeetingDates = [...new Set(state.clients.map(c => c.meetingDate).filter(d => d))].sort();
+
+            const weddingDateFilter = document.getElementById('clients-wedding-date-filter');
+            if (weddingDateFilter) {
+                weddingDateFilter.innerHTML = '<option value="all">All Wedding Dates</option>';
+                uniqueWeddingDates.forEach(date => {
+                    const option = document.createElement('option');
+                    option.value = date;
+                    option.textContent = formatDateDisplay(date);
+                    weddingDateFilter.appendChild(option);
+                });
+            }
+
+            const venueFilter = document.getElementById('clients-venue-filter');
+            if (venueFilter) {
+                venueFilter.innerHTML = '<option value="all">All Venues</option>';
+                uniqueVenues.forEach(venue => {
+                    const option = document.createElement('option');
+                    option.value = venue;
+                    option.textContent = venue;
+                    venueFilter.appendChild(option);
+                });
+            }
+
+            const followupDateFilter = document.getElementById('clients-followup-date-filter');
+            if (followupDateFilter) {
+                followupDateFilter.innerHTML = '<option value="all">All Follow-up Dates</option>';
+                uniqueFollowupDates.forEach(date => {
+                    const option = document.createElement('option');
+                    option.value = date;
+                    option.textContent = formatDateDisplay(date);
+                    followupDateFilter.appendChild(option);
+                });
+            }
+
+            const meetingDateFilter = document.getElementById('clients-meeting-date-filter');
+            if (meetingDateFilter) {
+                meetingDateFilter.innerHTML = '<option value="all">All Meeting Dates</option>';
+                uniqueMeetingDates.forEach(date => {
+                    const option = document.createElement('option');
+                    option.value = date;
+                    option.textContent = formatDateDisplay(date);
+                    meetingDateFilter.appendChild(option);
+                });
+            }
+        }
+
+        // Action functions
+        function editClient(id) {
+            openClientModal(id);
+        }
+
+        function deleteClient(id) {
+            if (confirm('Delete client? This cannot be undone.')) {
+                state.clients = state.clients.filter(c => c.id !== id);
+                persistAll();
+                renderAll();
+                toast('Client deleted');
+            }
+        }
+
+        function editProject(id) {
+            openProjectModal(id);
+        }
+
+        function viewProject(id) {
+            openProjectDetailModal(id);
+        }
+
+        function deleteProject(id) {
+            if (confirm('Delete project? This cannot be undone.')) {
+                state.projects = state.projects.filter(p => p.id !== id);
+                persistAll();
+                renderAll();
+                toast('Project deleted');
+            }
+        }
+
+        function editDesign(id) {
+            openDesignModal(id);
+        }
+
+        function deleteDesign(id) {
+            if (confirm('Delete design? This cannot be undone.')) {
+                state.designs = state.designs.filter(d => d.id !== id);
+                persistAll();
+                renderAll();
+                toast('Design deleted');
+            }
+        }
+
+        function exportDesign(id) {
+            const design = state.designs.find(d => d.id === id);
+            if (!design) {
+                toast('Design not found');
+                return;
+            }
+            
+            const html = `<!DOCTYPE html>
+            <html><head><title>${escapeHTML(design.name || 'Design')}</title></head><body>
+            <h1>${escapeHTML(design.name || 'Design')}</h1>
+            <p><strong>Category:</strong> ${escapeHTML(design.category)}</p>
+            <p><strong>Description:</strong> ${escapeHTML(design.description || '')}</p>
+            ${(design.images || []).map(src => `<img src="${src}" style="max-width:100%;margin:10px 0;">`).join('')}
+            </body></html>`;
+            
+            const blob = new Blob([html], { type: 'application/msword' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = (design.name || 'design') + '.doc';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            toast('Design document downloaded');
+        }
+
+        // Project detail modal
+        function openProjectDetailModal(projectId) {
+            state.activeProjectId = projectId;
+            const modal = document.getElementById('project-detail-modal');
+            const project = state.projects.find(p => p.id === projectId);
+            const client = state.clients.find(c => c.id === project?.clientId) || {};
+            
+            if (!project) {
+                toast('Project not found');
+                return;
+            }
+
+            const detailClient = document.getElementById('project-detail-client');
+            const detailFinal = document.getElementById('project-detail-final');
+            const detailAdvance = document.getElementById('project-detail-advance');
+            const detailStatus = document.getElementById('project-detail-payment-status');
+
+            if (detailClient) detailClient.textContent = client.name || 'Unknown Client';
+            if (detailFinal) detailFinal.textContent = '₹' + (project.finalAmount || 0).toLocaleString('en-IN');
+            if (detailAdvance) detailAdvance.textContent = '₹' + (project.advance || 0).toLocaleString('en-IN');
+            if (detailStatus) detailStatus.textContent = project.paymentStatus || 'Pending';
+
+            setProjectDetailTab('overview');
+            modal.showModal();
+        }
+
+        function setProjectDetailTab(tabName) {
+            console.log('🎯 Switching to project detail tab:', tabName);
+            
+            document.querySelectorAll('#project-detail-modal .tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabName);
+            });
+            
+            document.querySelectorAll('#project-detail-modal .tab-content').forEach(content => {
+                if (content.id === tabName + '-content') {
+                    content.style.display = 'block';
+                    content.classList.add('active');
+                    console.log('✅ Showing tab content:', content.id);
+                } else {
+                    content.style.display = 'none';
+                    content.classList.remove('active');
+                }
+            });
+            
+            switch (tabName) {
+                case 'overview':
+                    renderOverviewMedia();
+                    console.log('📋 Overview content rendered');
+                    break;
+                case 'cost-sheet':
+                    renderCostSheet();
+                    console.log('💰 Cost sheet rendered');
+                    break;
+                case 'element-sheet':
+                    renderElementSheet();
+                    renderElementFiles();
+                    console.log('📝 Element sheet rendered with MAXIMIZED DOCUMENT HEIGHT preview!');
+                    break;
+            }
+        }
+
+        function renderOverviewMedia() {
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project) return;
+            
+            if (!project.overviewMedia) project.overviewMedia = [];
+            
+            const container = document.getElementById('overview-media-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (project.overviewMedia.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 20px; grid-column: 1/-1;">No media files uploaded yet</p>';
+                return;
+            }
+            
+            project.overviewMedia.forEach((media, index) => {
+                const mediaEl = document.createElement('div');
+                mediaEl.className = 'project-design-item';
+                
+                const isVideo = media.type?.startsWith('video/');
+                const mediaContent = isVideo ?
+                    `<video controls style="width: 100%; max-height: 200px; display: block;">
+                        <source src="${media.src}" type="${media.type}">
+                        Your browser does not support video.
+                    </video>` :
+                    `<img src="${media.src}" alt="${media.name}" style="width: 100%; max-height: 200px; object-fit: cover; display: block;">`;
+                
+                mediaEl.innerHTML = `
+                    ${mediaContent}
+                    <div style="padding: 12px;">
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px;">${escapeHTML(media.name)}</h4>
+                        <p style="margin: 0 0 8px 0; font-size: 12px; color: #6b7280;">${escapeHTML(media.type)} • ${formatFileSize(media.size)}</p>
+                        <button class="action warn" onclick="removeOverviewMedia(${index})" style="font-size: 12px; padding: 4px 8px;">Remove</button>
+                    </div>
+                `;
+                
+                container.appendChild(mediaEl);
+            });
+        }
+
+        function renderCostSheet() {
+            const proj = state.projects.find(p => p.id === state.activeProjectId);
+            if (!proj) return;
+            
+            if (!proj.costSheet) proj.costSheet = [];
+            
+            const tbody = document.querySelector('#cost-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            let totalEst = 0, totalAct = 0;
+            
+            proj.costSheet.forEach((r, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${escapeHTML(r.item || '')}</td>
+                    <td>${escapeHTML(r.vendor || '')}</td>
+                    <td>₹${(r.estimated || 0).toLocaleString('en-IN')}</td>
+                    <td>₹${(r.actual || 0).toLocaleString('en-IN')}</td>
+                    <td>${escapeHTML(r.notes || '')}</td>
+                    <td><button class="action warn" onclick="deleteCostItem(${i})">Delete</button></td>
+                `;
+                tbody.appendChild(tr);
+                totalEst += r.estimated || 0;
+                totalAct += r.actual || 0;
+            });
+            
+            const totalEstEl = document.getElementById('cost-total-estimated');
+            const totalActEl = document.getElementById('cost-total-actual');
+            
+            if (totalEstEl) totalEstEl.textContent = '₹' + totalEst.toLocaleString('en-IN');
+            if (totalActEl) totalActEl.textContent = '₹' + totalAct.toLocaleString('en-IN');
+        }
+
+        // ENHANCED: Element Sheet rendering with auto-save and file support
+        function renderElementSheet() {
+            console.log('🎯 Rendering Enhanced Element Sheet...');
+            
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project) {
+                console.error('❌ Project not found for Element Sheet');
+                return;
+            }
+            
+            const textarea = document.getElementById('element-sheet-text');
+            if (textarea) {
+                textarea.value = project.elementSheetText || '';
+                console.log('✅ Element Sheet textarea populated with:', project.elementSheetText?.length || 0, 'characters');
+            } else {
+                console.error('❌ Element Sheet textarea not found!');
+            }
+        }
+
+        // Cost sheet management
+        function addCostItem() {
+            const item = document.getElementById('cost-item')?.value.trim();
+            const vendor = document.getElementById('cost-vendor')?.value.trim();
+            const estimated = Number(document.getElementById('cost-estimated')?.value) || 0;
+            const actual = Number(document.getElementById('cost-actual')?.value) || 0;
+            const notes = document.getElementById('cost-notes')?.value.trim();
+            
+            if (!item) {
+                toast('Item name is required');
+                return;
+            }
+            
+            const proj = state.projects.find(p => p.id === state.activeProjectId);
+            if (!proj) return;
+            
+            if (!proj.costSheet) proj.costSheet = [];
+            
+            proj.costSheet.push({ item, vendor, estimated, actual, notes });
+            persistAll();
+            renderCostSheet();
+            
+            if (document.getElementById('cost-item')) document.getElementById('cost-item').value = '';
+            if (document.getElementById('cost-vendor')) document.getElementById('cost-vendor').value = '';
+            if (document.getElementById('cost-estimated')) document.getElementById('cost-estimated').value = '';
+            if (document.getElementById('cost-actual')) document.getElementById('cost-actual').value = '';
+            if (document.getElementById('cost-notes')) document.getElementById('cost-notes').value = '';
+            
+            toast('Cost item added');
+        }
+
+        function deleteCostItem(index) {
+            const proj = state.projects.find(p => p.id === state.activeProjectId);
+            if (proj && proj.costSheet) {
+                proj.costSheet.splice(index, 1);
+                persistAll();
+                renderCostSheet();
+                toast('Cost item deleted');
+            }
+        }
+
+        function exportElementSheetAsWord() {
+            console.log('📄 Exporting Element Sheet as Word...');
+            
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project) {
+                toast('Project not found');
+                return;
+            }
+            
+            const client = state.clients.find(c => c.id === project.clientId) || {};
+            const elementText = project.elementSheetText || 'No elements listed yet.';
+            
+            const html = `<!DOCTYPE html>
+            <html><head>
+                <title>Element Sheet - ${escapeHTML(client.name || 'Project')}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+                    h1 { color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px; }
+                    .project-info { background: #f8f9ff; padding: 15px; margin: 20px 0; border-radius: 5px; }
+                    .elements { white-space: pre-wrap; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+                    .files { background: #f0f9ff; padding: 15px; margin: 20px 0; border-radius: 5px; }
+                </style>
+            </head><body>
+                <h1>📝 Project Element Sheet</h1>
+                <div class="project-info">
+                    <p><strong>Client:</strong> ${escapeHTML(client.name || 'Unknown Client')}</p>
+                    <p><strong>Wedding Date:</strong> ${formatDateDisplay(client.weddingDate) || 'Not specified'}</p>
+                    <p><strong>Venue:</strong> ${escapeHTML(client.venue || 'Not specified')}</p>
+                    <p><strong>Project Amount:</strong> ₹${(project.finalAmount || 0).toLocaleString('en-IN')}</p>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleDateString('en-IN')}</p>
+                </div>
+                <h2>🎯 Required Elements:</h2>
+                <div class="elements">${escapeHTML(elementText)}</div>
+                ${project.elementFiles && project.elementFiles.length > 0 ? `
+                    <div class="files">
+                        <h3>📎 Uploaded Files:</h3>
+                        <ul>
+                            ${project.elementFiles.map(f => `<li>${escapeHTML(f.name)} (${formatFileSize(f.size)})</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </body></html>`;
+            
+            const blob = new Blob([html], { type: 'application/msword' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Element_Sheet_${client.name || 'Project'}_${new Date().toISOString().split('T')[0]}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            console.log('✅ Element Sheet exported successfully');
+            toast('📄 Element sheet exported as Word document!');
+        }
+
+        function clearElementSheet() {
+            if (confirm('Are you sure you want to clear all element text and files? This cannot be undone.')) {
+                const textarea = document.getElementById('element-sheet-text');
+                if (textarea) {
+                    textarea.value = '';
+                }
+                
+                const project = state.projects.find(p => p.id === state.activeProjectId);
+                if (project) {
+                    project.elementSheetText = '';
+                    project.elementFiles = [];
+                    persistAll();
+                    renderElementFiles();
+                }
+                
+                console.log('🗑️ Element Sheet and files cleared');
+                toast('🗑️ Element sheet and files cleared');
+            }
+        }
+
+        // Overview media upload
+        function addOverviewMediaFiles() {
+            const fileInput = document.getElementById('overview-media-file');
+            if (!fileInput || fileInput.files.length === 0) {
+                toast('Please select files to upload');
+                return;
+            }
+            
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project) {
+                toast('Project not found');
+                return;
+            }
+            
+            if (!project.overviewMedia) project.overviewMedia = [];
+            
+            const files = Array.from(fileInput.files);
+            let processedCount = 0;
+            
+            files.forEach(file => {
+                if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+                    toast(`File "${file.name}" is not a valid image or video file`);
+                    return;
+                }
+                
+                if (file.size > 50 * 1024 * 1024) {
+                    toast(`File "${file.name}" is too large (max 50MB)`);
+                    return;
+                }
+                
+                fileToDataURL(file)
+                    .then(dataUrl => {
+                        project.overviewMedia.push({
+                            id: uid(),
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            src: dataUrl,
+                            uploadDate: new Date().toISOString()
+                        });
+                        
+                        processedCount++;
+                        if (processedCount === files.length) {
+                            persistAll();
+                            renderOverviewMedia();
+                            toast(`${processedCount} file(s) uploaded successfully`);
+                            fileInput.value = '';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error uploading file:', error);
+                        toast(`Error uploading "${file.name}"`);
+                    });
+            });
+        }
+
+        function removeOverviewMedia(index) {
+            if (!confirm('Remove this media file? This cannot be undone.')) return;
+            
+            const project = state.projects.find(p => p.id === state.activeProjectId);
+            if (!project || !project.overviewMedia) return;
+            
+            project.overviewMedia.splice(index, 1);
+            persistAll();
+            renderOverviewMedia();
+            toast('Media file removed');
+        }
+
+        // Export functions
+        function exportReceivables() {
+            const rows = [['Client', 'Final', 'Advance', 'Due']];
+            state.projects.forEach(p => {
+                const client = state.clients.find(c => c.id === p.clientId) || {};
+                const due = Math.max(0, (p.finalAmount || 0) - (p.advance || 0));
+                rows.push([client.name || '—', p.finalAmount || 0, p.advance || 0, due]);
+            });
+            
+            const csv = rows.map(r => r.map(c => `"${String(c || '').replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'receivables.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            toast('Receivables exported');
+        }
+
+        function exportClientData() {
+            const rows = [
+                ['Name', 'Phone', 'Email', 'Wedding Date', 'Venue', 'Status', 'Follow-up Date', 'Meeting Date', 'Notes']
+            ];
+            
+            state.clients.forEach(c => {
+                rows.push([
+                    c.name || '',
+                    c.phone || '',
+                    c.email || '',
+                    formatDateDisplay(c.weddingDate) || '',
+                    c.venue || '',
+                    c.status || '',
+                    formatDateDisplay(c.followUp) || '',
+                    formatDateDisplay(c.meetingDate) || '',
+                    c.notes || ''
+                ]);
+            });
+            
+            const csv = rows.map(r => r.map(c => `"${String(c || '').replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'client-data.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            toast('Client data exported to Excel format');
+        }
+
+        // Make functions globally accessible
+        window.editClient = editClient;
+        window.deleteClient = deleteClient;
+        window.editProject = editProject;
+        window.viewProject = viewProject;
+        window.deleteProject = deleteProject;
+        window.editDesign = editDesign;
+        window.deleteDesign = deleteDesign;
+        window.exportDesign = exportDesign;
+        window.setProjectDetailTab = setProjectDetailTab;
+        window.addCostItem = addCostItem;
+        window.deleteCostItem = deleteCostItem;
+        window.addOverviewMediaFiles = addOverviewMediaFiles;
+        window.removeOverviewMedia = removeOverviewMedia;
+        window.exportElementSheetAsWord = exportElementSheetAsWord;
+        window.clearElementSheet = clearElementSheet;
+        window.uploadElementFiles = uploadElementFiles;
+        window.removeElementFile = removeElementFile;
+        window.previewElementFile = previewElementFile;
+        window.downloadElementFile = downloadElementFile;
+
+        // Event delegation for dynamic buttons
+        document.addEventListener('click', (e) => {
+            const act = e.target.dataset.act;
+            if (act === 'add-cost-item') {
+                addCostItem();
+            }
+        });
+
+        // Upload button handlers
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'add-overview-media-file') {
+                addOverviewMediaFiles();
+            }
+        });
+
+        // Initialize application
+        function init() {
+            console.log('🚀 Initializing WeddingCraft CRM with MAXIMIZED DOCUMENT HEIGHT File Preview...');
+            
+            initEventHandlers();
+            initDashboardNavigation();
+            
+            renderAll();
+            
+            setActiveTab('dashboard');
+            
+            console.log('✅ WeddingCraft CRM initialized successfully!');
+            toast('🎉 Application loaded! Now with MAXIMIZED DOCUMENT HEIGHT for perfect document reading!');
+        }
+
+        // Start the application
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
 </body>
 </html>
